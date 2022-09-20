@@ -40,6 +40,8 @@ import {
       allowNull: false,
     })
     date: string;
+
+    
   
     // @ForeignKey(() => User)
     // @Column({
