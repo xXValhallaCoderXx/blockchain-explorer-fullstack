@@ -7,7 +7,7 @@ const RootRoutes = () => {
   return (
     <Routes>
       <Route element={<AuthLayout />}>
-        <Route path="/" element={<DashboardPage />} />
+        <Route path="/transactions/*" element={<DashboardPage />} />
         <Route path="/tagged-tx" element={<TaggedTxPage />} />
       </Route>
     </Routes>
