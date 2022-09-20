@@ -4,7 +4,7 @@ services:
         image: postgres:14
         restart: always
         environment:
-          - POSTGRES_DB=block-explorer
+          - POSTGRES_DB=block-explorer-dev
           - POSTGRES_USER=postgres
           - POSTGRES_PASSWORD=postgres
         ports:
