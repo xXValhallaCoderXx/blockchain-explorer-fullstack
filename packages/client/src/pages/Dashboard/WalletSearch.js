@@ -8,7 +8,7 @@ const WalletSearchContainer = ({ handleOnSubmit, addresses }) => {
   const walletsGroup =  addresses.split(",").map(address => {return {address: address}})
 
   return (
-    <Box sx={{ padding: 2 }}>
+    <Box sx={{ padding: 5 }}>
       <Formik
         initialValues={{
           wallets: walletsGroup
