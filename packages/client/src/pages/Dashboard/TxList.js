@@ -25,7 +25,7 @@ const TxListContainer = ({ data }) => {
   };
   return (
     <Box sx={{ padding: 3 }}>
-      <Typography>Wallets</Typography>
+      <Typography variant="h4">Transaction List</Typography>
       <BasicTable data={parsedData} />
     </Box>
   );

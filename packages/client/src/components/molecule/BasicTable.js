@@ -22,7 +22,7 @@ const rows = [
 
 export default function BasicTable({ data }) {
   return (
-    <TableContainer component={Paper}>
+    <TableContainer elevation={0} component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>

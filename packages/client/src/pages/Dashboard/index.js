@@ -1,4 +1,4 @@
-import { Card, Box } from "@mui/material";
+import { Card, Box, Paper } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import WalletSearch from "./WalletSearch";
@@ -22,25 +22,31 @@ const DashboardContainer = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={4}>
-        <Grid item xs={9}>
-          <Card style={{ height: 930 }}>
-            {isLoading ? <LoadingComponent message="Crypto Goblins are calculating, please wait..." /> : <TxList data={data} />}
-          </Card>
+        <Grid item xs={12} xl={9} order={{ xs: 2, xl: 1 }}>
+          <StyledCard elevation={0}>
+            {isLoading ? (
+              <LoadingComponent message="Crypto Goblins are calculating, please wait..." />
+            ) : (
+              <TxList data={data} />
+            )}
+          </StyledCard>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={12} xl={3} order={{ xs: 1, xl: 2 }}>
           <Grid container spacing={4}>
-            <Grid item xs={12}>
-              <Card style={{ height: 300 }}>
-                <TxOverview />
-              </Card>
-            </Grid>
-            <Grid item xs={12}>
-              <Card style={{ height: 600 }}>
-                <WalletSearch
+            <Grid item xs={12} sm={6} xl={12}>
+              <StyledCard elevation={0}>
+              <WalletSearch
                   handleOnSubmit={handleOnSubmit}
                   addresses={addresses}
+                
                 />
-              </Card>
+              </StyledCard>
+            </Grid>
+            <Grid item xs={12} sm={6} xl={12}>
+              <StyledCard elevation={0}>
+              <TxOverview   data={data} />
+           
+              </StyledCard>
             </Grid>
           </Grid>
         </Grid>
@@ -49,4 +55,15 @@ const DashboardContainer = () => {
   );
 };
 
+const StyledCard = styled(Paper)(({ theme }) => ({
+  backgroundColor: "#FFFFFF",
+  boxShadow: "0 3px 8px 0 rgba(0, 0, 0, 0.5),.05)",
+  borderRadius: 15,
+  [theme.breakpoints.up("xs")]: {
+    maxHeight: 300,
+  },
+  [theme.breakpoints.up("lg")]: {
+    maxHeight: 900,
+  },
+}));
 export default DashboardContainer;

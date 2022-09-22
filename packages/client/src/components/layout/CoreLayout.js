@@ -20,7 +20,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
     height: "100vh",
-    backgroundColor: "gray",
+    backgroundColor: "#EFF3F8",
     flexGrow: 1,
     padding: theme.spacing(3),
     transition: theme.transitions.create("margin", {
