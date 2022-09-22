@@ -1,4 +1,4 @@
-import { Card, Box, Paper } from "@mui/material";
+import {  Box, Paper } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import WalletSearch from "./WalletSearch";
@@ -11,14 +11,22 @@ import LoadingComponent from "../../components/molecule/LoadingComponent";
 const DashboardContainer = () => {
   const [queryParam] = useSearchParams(); // Unpacking and retrieve id
   const addresses = queryParam.get("addresses");
+  const [currentQueryParameters, setSearchParams] = useSearchParams();
+  const newQueryParameters = new URLSearchParams();
   const { data, isLoading } = useGetTransactionListQuery({
     chainId: queryParam.get("chainId"),
     txCount: queryParam.get("txCount"),
     addresses,
   });
 
-  console.log("IS LOAIND: ", data);
-  const handleOnSubmit = () => {};
+  const handleOnSubmit = (values) => {
+    newQueryParameters.set("txCount", 5);
+    newQueryParameters.set("chainId", 250);
+    const addresses = values.wallets.map((item) => item.address);
+
+    newQueryParameters.set("addresses", addresses.join(','));
+    setSearchParams(newQueryParameters);
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={4}>
@@ -35,17 +43,15 @@ const DashboardContainer = () => {
           <Grid container spacing={4}>
             <Grid item xs={12} sm={6} xl={12}>
               <StyledCard elevation={0}>
-              <WalletSearch
+                <WalletSearch
                   handleOnSubmit={handleOnSubmit}
                   addresses={addresses}
-                
                 />
               </StyledCard>
             </Grid>
             <Grid item xs={12} sm={6} xl={12}>
               <StyledCard elevation={0}>
-              <TxOverview   data={data} />
-           
+                <TxOverview data={data} />
               </StyledCard>
             </Grid>
           </Grid>
