@@ -3,6 +3,7 @@ import { Typography, Box, Grid } from "@mui/material";
 import { Chart, ArcElement } from "chart.js";
 
 import { Doughnut } from "react-chartjs-2";
+Chart.register(ArcElement);
 
 const TxOverviewContainer = ({ data }) => {
   return (
@@ -44,5 +45,4 @@ const TxOverviewContainer = ({ data }) => {
     </Box>
   );
 };
-
 export default TxOverviewContainer;

@@ -31,7 +31,12 @@ const WalletSearchContainer = ({ handleOnSubmit, addresses }) => {
         validationSchema={object({
           wallets: array(
             object({
-              address: string().required("Address is required"),
+              address: string()
+                .required("Wallet address is required")
+                .matches(
+                  /^0x[a-fA-F0-9]{40}$/g,
+                  "Please enter a valid wallet address"
+                ),
             })
           ),
         })}
@@ -91,7 +96,14 @@ const WalletSearchContainer = ({ handleOnSubmit, addresses }) => {
                     }}
                   >
                     {values.wallets.map((_, index) => (
-                      <Grid container key={index} mb={4}>
+                      <Grid
+                        container
+                        key={index}
+                        sx={{
+                          mt: index === 0 ? 1 : 0,
+                        }}
+                        mb={2}
+                      >
                         <Grid item xs={10} sm={11}>
                           <Field
                             fullWidth
@@ -105,7 +117,6 @@ const WalletSearchContainer = ({ handleOnSubmit, addresses }) => {
 
                         {index > 0 && (
                           <Grid item xs={2} sm={1} pt={1} pl={2}>
-                 
                             <DeleteOutlineOutlined
                               onClick={() => remove(index)}
                             />
