@@ -1,4 +1,4 @@
-import {  Box, Paper } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import WalletSearch from "./WalletSearch";
@@ -24,7 +24,17 @@ const DashboardContainer = () => {
     newQueryParameters.set("chainId", 250);
     const addresses = values.wallets.map((item) => item.address);
 
-    newQueryParameters.set("addresses", addresses.join(','));
+    newQueryParameters.set("addresses", addresses.join(","));
+    setSearchParams(newQueryParameters);
+  };
+
+  const handleOnDelete = (removingWallet, values) => {
+    newQueryParameters.set("txCount", 5);
+    newQueryParameters.set("chainId", 250);
+    const filteredWallets = values.wallets.filter(
+      (wallet) => wallet.address !== removingWallet.address
+    );
+    newQueryParameters.set("addresses", filteredWallets.join(","));
     setSearchParams(newQueryParameters);
   };
   return (
@@ -46,6 +56,7 @@ const DashboardContainer = () => {
                 <WalletSearch
                   handleOnSubmit={handleOnSubmit}
                   addresses={addresses}
+                  onClickRemove={handleOnDelete}
                 />
               </StyledCard>
             </Grid>

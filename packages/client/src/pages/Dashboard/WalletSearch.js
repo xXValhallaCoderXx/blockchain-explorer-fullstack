@@ -5,7 +5,7 @@ import { Typography, Grid, Box } from "@mui/material";
 import { TextField } from "formik-material-ui";
 import { DeleteOutlineOutlined, Add } from "@mui/icons-material";
 
-const WalletSearchContainer = ({ handleOnSubmit, addresses }) => {
+const WalletSearchContainer = ({ handleOnSubmit, addresses, onClickRemove }) => {
   const useArrayHelperRef = useRef(null);
   const wallets = addresses ? addresses : "";
   const walletsGroup = wallets?.split(",").map((address) => {
@@ -36,6 +36,11 @@ const WalletSearchContainer = ({ handleOnSubmit, addresses }) => {
     useArrayHelperRef.current.push({ address: "" });
   };
 
+  const handleOnClickRemove = (_index) => () => {
+    onClickRemove(formik.values.wallets[_index], formik.values)
+    useArrayHelperRef.current.remove(_index);
+
+  }
   return (
     <Box sx={{ padding: 2 }}>
       <Typography variant="h6" component="h2" sx={{ color: "#2D2D2C" }}>
@@ -100,7 +105,7 @@ const WalletSearchContainer = ({ handleOnSubmit, addresses }) => {
                       {index > 0 && (
                         <Grid item xs={2} sm={1} pt={1} pl={2}>
                           <DeleteOutlineOutlined
-                            onClick={() => arrayHelpers.remove(index)}
+                            onClick={handleOnClickRemove(index)}
                           />
                         </Grid>
                       )}

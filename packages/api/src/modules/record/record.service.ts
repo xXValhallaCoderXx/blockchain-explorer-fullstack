@@ -2,12 +2,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Record } from './record.model';
+import { User } from 'src/modules/users/user.model';
 import { CreateRecordDTO } from './record.dto';
 @Injectable()
 export class RecordService {
   constructor(
     @InjectModel(Record)
     private recordModel: typeof Record,
+    // private userModel: typeof User,
   ) {}
 
   async findAll(req: any, query: any): Promise<Record[]> {
@@ -15,7 +17,11 @@ export class RecordService {
   }
 
   async create(data: CreateRecordDTO, req: any): Promise<any> {
-    // const user = await this.recordModel.findUserByEmail(req.user.email);
+    // const user = await this.userModel.findOne({
+    //   where: {
+    //     email: req.user.email,
+    //   },
+    // });
     // if (!user) {
     //   return null;
     // }

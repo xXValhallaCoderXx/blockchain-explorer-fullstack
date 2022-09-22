@@ -26,4 +26,8 @@ export class CreateRecordDTO {
   @IsNotEmpty()
   @IsDateString()
   date: string;
+
+  @IsNotEmpty()
+  @IsString()
+  tag: string;
 }
