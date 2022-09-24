@@ -1,13 +1,12 @@
 import * as bcrypt from 'bcrypt';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { UsersService } from 'src/modules/user/users.service';
+import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthUserDTO } from './auth.dto';
-import { CreateUserDTO } from '../user/user.dto';
-import { User } from '../user/user.model';
+import { CreateUserDTO } from '../users/users.dto';
+import { User } from '../users/user.model';
 import { PostgresErrorCode } from 'src/exceptions/db-exceptions';
 import { InvalidCredentials } from 'src/exceptions/api-exceptions';
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -19,7 +18,7 @@ export class AuthService {
     try {
       const user = await this.usersService.findUserByEmail(data.email);
       await this.verifyPassword(data.password, user.password);
-      // user.password = undefined;
+
       return user;
     } catch {
       throw new InvalidCredentials();

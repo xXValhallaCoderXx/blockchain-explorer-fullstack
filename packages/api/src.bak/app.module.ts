@@ -1,17 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from './modules/auth/auth.module';
-import { UsersModule } from './modules/user/users.module';
-import { UserTxModule } from './modules/user-transactions/user-transactions.module';
-import { ScheduleModule } from '@nestjs/schedule';
-import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
-
+import { SequelizeModule } from '@nestjs/sequelize';
+import { TransactionsModule } from './modules/transactions/transactions.module';
+import { RecordModule } from './modules/record/record.module';
+import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    ScheduleModule.forRoot(),
     SequelizeModule.forRoot({
       dialect: 'postgres',
       host: process.env.DB_HOST,
@@ -19,9 +17,9 @@ import { ConfigModule } from '@nestjs/config';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      sync: {
-        force: true,
-      },
+      // sync: {
+      //   force: true,
+      // },
       synchronize: true,
       autoLoadModels: true,
       dialectOptions: {
@@ -34,7 +32,8 @@ import { ConfigModule } from '@nestjs/config';
     }),
     AuthModule,
     UsersModule,
-    UserTxModule,
+    RecordModule,
+    TransactionsModule,
   ],
 })
 export class AppModule {}

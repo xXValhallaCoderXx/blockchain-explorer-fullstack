@@ -4,10 +4,10 @@ import { RecordService } from './record.service';
 import { RecordController } from './record.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Record } from './record.model';
-import { User } from 'src/modules/users/user.model';
+import { UsersModule } from '../users/users.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Record])],
+  imports: [UsersModule, SequelizeModule.forFeature([Record])],
   controllers: [RecordController],
   providers: [RecordService],
 })

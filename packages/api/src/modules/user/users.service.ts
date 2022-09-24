@@ -2,8 +2,9 @@ import * as bcrypt from 'bcrypt';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './user.model';
-import { CreateUserDTO, UpdatePasswordDTO } from './users.dto';
+import { CreateUserDTO, UpdatePasswordDTO } from './user.dto';
 import { InvalidCredentials } from 'src/exceptions/api-exceptions';
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -37,7 +38,7 @@ export class UsersService {
       where: {
         id,
       },
-      attributes: ['id', 'email', 'prefs'],
+      attributes: ['id', 'email'],
     });
 
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
@@ -48,26 +49,7 @@ export class UsersService {
     return await this.userModel.create<User>({
       ...user,
       email: user.email.toLowerCase(),
-      prefs: {
-        autoMove: false,
-      },
     });
-  }
-
-  async updatePerfs(userId: any, body: any): Promise<User> {
-    const user = await this.userModel.findOne({
-      where: {
-        id: userId,
-      },
-      attributes: ['id', 'email', 'prefs'],
-    });
-    user.prefs = {
-      ...user.prefs,
-      ...body,
-    };
-
-    await user.save();
-    return user;
   }
 
   private async verifyPassword(plainPassword: string, hashedPassword: string) {
