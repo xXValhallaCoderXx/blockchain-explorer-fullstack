@@ -1,12 +1,12 @@
 import { useState } from "react";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import isEmpty from "lodash.isempty";
 import { Box, Tab, Tabs } from "@mui/material";
 import EmptySearchContainer from "./components/EmptySearch";
 import WalletOverview from "./components/WalletOveriew";
 import TxListContainer from "./components/TxList";
 
-const MainContainer = ({ data }) => {
+const MainContainer = ({ data, onClickDelete }) => {
   const selectedWallets = useSelector(
     (state) => state.dashboard.selectedAddresses
   );
@@ -14,7 +14,7 @@ const MainContainer = ({ data }) => {
   const handleChange = (event, newValue) => setValue(newValue);
 
   if (isEmpty(data)) {
-    return <EmptySearchContainer message="Enter wallets to begin" />;
+    return <EmptySearchContainer message="Begin adding wallets" />;
   }
 
   return (
@@ -22,11 +22,13 @@ const MainContainer = ({ data }) => {
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Overview" />
-          <Tab label={`Transaction List - Selected (${selectedWallets.length})`} />
+          <Tab
+            label={`Transaction List - Selected (${selectedWallets.length})`}
+          />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <WalletOverview data={data} />
+        <WalletOverview data={data} onClickDelete={onClickDelete} />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <TxListContainer data={data} selectedWallets={selectedWallets} />

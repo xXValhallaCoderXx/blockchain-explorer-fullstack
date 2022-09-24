@@ -13,6 +13,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import BookIcon from "@mui/icons-material/Book";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -20,43 +21,17 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: "flex-end",
 }));
 
 export default function PersistentDrawerLeft({ open, handleDrawerClose }) {
   const theme = useTheme();
-  // const [isOpen, setIsOpen] = React.useState(true);
-
-  // const toggleDrawer = (anchor, open) => (event) => {
-  //   if (
-  //     event.type === "keydown" &&
-  //     (event.key === "Tab" || event.key === "Shift")
-  //   ) {
-  //     return;
-  //   }
-
-  //   setIsOpen(!isOpen);
-  // };
+  const navigate = useNavigate();
+  const handleOnClick = (path) => () => {
+    navigate(`/${path.value}`)
+  }
   return (
-    // <Drawer anchor={"left"} open={isOpen} onClose={toggleDrawer}>
-    //   <List>
-    //     {[
-    //       { value: "dashboard", label: "Dashboard" },
-    //       { value: "tagged-tx", label: "Tagged Tx" },
-    //     ].map((text, index) => (
-    //       <ListItem key={ImageBitmapRenderingContext} disablePadding>
-    //         <ListItemButton>
-    //           <ListItemIcon>
-    //             {text.value === "dashboard" ? <DashboardIcon /> : <BookIcon />}
-    //           </ListItemIcon>
-    //           <ListItemText primary={text.label} />
-    //         </ListItemButton>
-    //       </ListItem>
-    //     ))}
-    //   </List>
-    // </Drawer>
     <Drawer
       sx={{
         width: drawerWidth,
@@ -81,8 +56,8 @@ export default function PersistentDrawerLeft({ open, handleDrawerClose }) {
       </DrawerHeader>
       <Divider />
     <List>
-      {[{value: "dashboard", label: "Dashboard"}, {value: "tagged-tx", label: "Tagged Tx"}].map((text, index) => (
-        <ListItem key={ImageBitmapRenderingContext} disablePadding>
+      {[{value: "transactions", label: "Dashboard"}, {value: "tagged-tx", label: "Tagged Tx"}].map((text, index) => (
+        <ListItem key={ImageBitmapRenderingContext} disablePadding onClick={handleOnClick(text)}>
           <ListItemButton>
             <ListItemIcon>
               {text.value === "dashboard" ? <DashboardIcon /> : <BookIcon />}

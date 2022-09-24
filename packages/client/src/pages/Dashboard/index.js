@@ -10,6 +10,7 @@ import DashboardView from "./DashboardView";
 import AddWalletModal from "./components/AddWalletModal";
 import LoadingComponent from "../../components/molecule/LoadingComponent";
 import { CircularProgress, Backdrop } from "@mui/material";
+import { removeAddress } from "../../slices/dashboard-slice";
 
 const DashboardContainer = () => {
   const dispatch = useDispatch();
@@ -25,12 +26,17 @@ const DashboardContainer = () => {
     txApiResult.isSuccess && txApiResult.status === "pending";
   const initialLoading = !txApiResult.isSuccess && txApiResult.isLoading;
 
-  
   useEffect(() => {
     if (txCount && chainId && addresses) {
       getTxApi({ addresses, txCount, chainId });
     }
   }, [addresses, txCount, chainId]);
+
+  useEffect(() => {
+    if (!txApiResult.isFetching && txApiResult.isSuccess) {
+      dispatch(setIsAddModalOpen({ isOpen: false }));
+    }
+  }, [txApiResult.isFetching]);
 
   const handleOnClickAdd = () => {
     dispatch(setIsAddModalOpen({ isOpen: true }));
@@ -40,23 +46,31 @@ const DashboardContainer = () => {
     dispatch(setIsAddModalOpen({ isOpen: false }));
   };
 
-  const handleSubmit = (values) => {
-    // newQueryParameters.set("txCount", 5);
-    // newQueryParameters.set("chainId", 250);
-    // const addresses = values.wallets.map((item) => item.address);
-    // newQueryParameters.set("addresses", addresses.join(","));
-    // setSearchParams(newQueryParameters);
+  const handleSubmit = ({ address, label }) => {
+    chainId && newQueryParameters.set("chainId", chainId);
+    txCount && newQueryParameters.set("txCount", txCount);
+    let tempAddress = queryParam.get("addresses");
+    if (!tempAddress) {
+      newQueryParameters.set("addresses", address);
+      setSearchParams(newQueryParameters);
+    } else {
+      if (tempAddress.includes(",")) {
+      } else {
+        newQueryParameters.set("addresses", `${tempAddress},${address}`);
+        setSearchParams(newQueryParameters);
+      }
+    }
   };
 
-  // const handleOnDelete = (removingWallet, values) => {
-  //   newQueryParameters.set("txCount", 5);
-  //   newQueryParameters.set("chainId", 250);
-  //   const filteredWallets = values.wallets.filter(
-  //     (wallet) => wallet.address !== removingWallet.address
-  //   );
-  //   newQueryParameters.set("addresses", filteredWallets.join(","));
-  //   setSearchParams(newQueryParameters);
-  // };
+  const handleOnDelete = ({ address }) => {
+    chainId && newQueryParameters.set("chainId", chainId);
+    txCount && newQueryParameters.set("txCount", txCount);
+    const splitUrl = queryParam.get("addresses").split(",")
+    const filteredWallets = splitUrl.find(wallet => wallet !== address)
+    newQueryParameters.set("addresses", filteredWallets);
+    dispatch(removeAddress(address));
+    setSearchParams(newQueryParameters);
+  };
 
   const handleOnChangeNetwork = (value) => {
     txCount && newQueryParameters.set("txCount", txCount);
@@ -71,6 +85,7 @@ const DashboardContainer = () => {
     addresses && newQueryParameters.set("addresses", addresses);
     setSearchParams(newQueryParameters);
   };
+  console.log("TX", txApiResult.data);
   return (
     <Box>
       <FilterBarContainer
@@ -84,12 +99,18 @@ const DashboardContainer = () => {
         {initialLoading && (
           <LoadingComponent message={"Fetching wallet data..."} />
         )}
-        {!initialLoading && <DashboardView data={txApiResult.data} />}
+        {!initialLoading && (
+          <DashboardView
+            data={txApiResult.data}
+            onClickDelete={handleOnDelete}
+          />
+        )}
       </Box>
       <AddWalletModal
         isOpen={isAddModalOpen}
         onClose={handleOnClose}
         handleSubmit={handleSubmit}
+        isLoading={isRefetching || initialLoading}
       />
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { GetTxQueryDTO, GetTxParamDTO } from './transactions.dto';
@@ -24,17 +24,23 @@ export class TransactionsService {
 
     // Barbaric way of doing this - but - POC ^^
     const apiResponse = {};
+    console.log('HIT');
     for (const address of parsedAddresses) {
       try {
+        console.log('MAKING CALL');
         const response = await this.httpService.axiosRef.get(
           `${BASE_URL}/${chainId}/address/${address}/transactions_v2/?${URL_PARAMS}`,
         );
         const parsedData = this.parseExternalApiResponse(response.data.data);
+        console.log('END CALL');
         apiResponse[address] = parsedData;
+        await new Promise((r) => setTimeout(r, 350));
       } catch (error) {
-        console.log('error: ', error);
+        console.log('error: ', error.response);
+        // throw new HttpException(500, 'Timeout');
       }
     }
+    console.log('DONE');
     return apiResponse;
   }
 

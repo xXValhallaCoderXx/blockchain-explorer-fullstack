@@ -5,7 +5,7 @@ import { TextField } from "formik-material-ui";
 import { object, string } from "yup";
 import { useFormik, FormikProvider, Field } from "formik";
 
-const AddWalletModal = ({ isOpen, onClose, handleSubmit }) => {
+const AddWalletModal = ({ isOpen, onClose, handleSubmit, isLoading }) => {
   const formik = useFormik({
     initialValues: {
       address: "",
@@ -18,6 +18,7 @@ const AddWalletModal = ({ isOpen, onClose, handleSubmit }) => {
       label: string().required("Wallet label is required"),
     }),
     onSubmit: (values, actions) => {
+        console.log("hmmm")
       handleSubmit && handleSubmit(values);
       actions.setSubmitting(false);
     },
@@ -69,10 +70,10 @@ const AddWalletModal = ({ isOpen, onClose, handleSubmit }) => {
               </Box>
             </StyledForm>
             <ActionButtons>
-              <Button variant="outlined" onClick={handleOnClose}>
+              <Button variant="outlined" onClick={handleOnClose} disabled={isLoading}>
                 Cancel
               </Button>
-              <Button sx={{ ml: 3 }} variant="contained">
+              <Button sx={{ ml: 3 }} variant="contained" type="submit" disabled={isLoading}>
                 Submit
               </Button>
             </ActionButtons>

@@ -12,7 +12,7 @@ const EmptySearchContainer = ({ message = "Ehhh" }) => {
       flexDirection="column"
     >
       <img style={{ maxHeight: 350 }} src={searchEmpty} alt="search-empty" />
-      <Typography mt={2}>{message}</Typography>
+      <Typography variant="h4" mt={4}>{message}</Typography>
     </Box>
   );
 };

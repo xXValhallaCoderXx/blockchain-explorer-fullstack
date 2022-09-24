@@ -1,10 +1,11 @@
-import { Grid, Box, Card, Typography } from "@mui/material";
+import { Grid, Box, Card, Typography, IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addAddress, removeAddress } from "../../../slices/dashboard-slice";
 import walletIcon from "../../../assets/image/wallet-icon.png";
+import { Delete } from "@mui/icons-material";
 
-const WalletOverview = ({ data }) => {
+const WalletOverview = ({ data, onClickDelete }) => {
   const dispatch = useDispatch();
   const selectedWallets = useSelector(
     (state) => state.dashboard.selectedAddresses
@@ -44,6 +45,11 @@ const WalletOverview = ({ data }) => {
     }
   };
 
+  const handleOnClickDelete = (wallet) => (e) => {
+    e.stopPropagation();
+    onClickDelete && onClickDelete(wallet);
+  }
+
   return (
     <Box mt={4}>
       <Typography sx={{ mb: 4 }}>
@@ -59,15 +65,28 @@ const WalletOverview = ({ data }) => {
                 sx={{
                   borderRadius: 5,
                   boxShadow: selectedWallets.includes(wallet.address)
-                    ? "0px 0px 0px 10px #FC5185"
-                    : " 0px 0px 0px 5px #FC5185",
-                  transition: " box-shadow 0.6s linear",
+                    ? "0px 0px 0px 6px #333333"
+                    : " 0px 0px 0px 3px #999999",
+                  transition: " box-shadow 0.4s linear",
+                  "&:hover": {
+                    cursor: "pointer",
+                  },
                 }}
               >
+                <Box style={{ position: "relative" }}>
+                  <IconButton
+                  onClick={handleOnClickDelete(wallet)}
+                    style={{ position: "absolute", right: 20, top: 20 }}
+                  >
+                    <Delete />
+                  </IconButton>
+                </Box>
+
                 <Box p={2}>
                   <Box sx={{ display: "flex", justifyContent: "center" }}>
                     <img src={walletIcon} alt="" />
                   </Box>
+
                   <Box mt={2}>
                     <Typography sx={{ fontWeight: 600 }}>Label</Typography>
                     {wallet.label || `Wallet ${index}`}

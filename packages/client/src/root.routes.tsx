@@ -9,7 +9,7 @@ const RootRoutes = () => {
       <Route element={<AuthLayout />}>
         <Route path="/transactions/*" element={<DashboardPage />} />
         <Route path="/tagged-tx" element={<TaggedTxPage />} />
-        <Route path="*" element={<Navigate to="/transactions" replace />} />
+        {/* <Route path="*" element={<Navigate to="/transactions" replace />} /> */}
       </Route>
     </Routes>
   );
