@@ -52,7 +52,9 @@ const DashboardContainer = () => {
     }
   }, [txApiResult.isFetching]);
 
+  console.log('ddd', isAddModalOpen)
   const handleOnClickAdd = () => {
+  
     dispatch(setIsAddModalOpen({ isOpen: true }));
   };
 
@@ -100,9 +102,7 @@ const DashboardContainer = () => {
     setSearchParams(newQueryParameters);
   };
 
-  if (isEmpty(txApiResult.data)) {
-    return <EmptySearchContainer message="Begin adding wallets" />;
-  }
+
 
   const handleChange = (event, newValue) => setValue(newValue);
 

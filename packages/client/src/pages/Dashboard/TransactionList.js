@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import { Typography, Box, Card, Grid } from "@mui/material";
+import { Typography, Box, Card, Grid, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { format } from "date-fns";
 import EmptySearchContainer from "../../components/molecule/EmptySearch";
+import AddTransactionTagModal from "./components/AddTransactionTagModal";
 
 const columns = [
   { field: "id", fieldName: "ID" },
@@ -39,6 +40,8 @@ const columns = [
 
 const TxListContainer = ({ data, selectedWallets }) => {
   const [parsedData, setParsedData] = useState([]);
+  const [selectedTx, setSelectedTx] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     let flatData = [];
@@ -58,6 +61,25 @@ const TxListContainer = ({ data, selectedWallets }) => {
     setParsedData(sortDates);
   }, [data]);
 
+  const handleOnClickCell = (x) => {
+    if (selectedTx.includes(x.id)) {
+      const filterArray = selectedTx.filter((item) => item !== x.id);
+      setSelectedTx(filterArray);
+    } else {
+      const newData = [...selectedTx, x.id];
+      setSelectedTx(newData);
+    }
+  };
+
+  const handleSubmit = () => {};
+  const onHandleClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const onClickAddTags = () => {
+    setIsModalOpen(true);
+  };
+
   if (parsedData.length === 0) {
     return (
       <EmptySearchContainer message="Please select which wallets to view in Overview" />
@@ -66,11 +88,28 @@ const TxListContainer = ({ data, selectedWallets }) => {
 
   return (
     <Box>
-      <Box sx={{ marginTop: 4, marginBottom: 2 }}>
-        <Typography variant="body">
-          Aggregated list of selected wallet transactions
-        </Typography>
-      </Box>
+      <Grid container sx={{ mt: 2, mb: 3 }}>
+        <Grid item container xs={12} lg={9} xl={7}>
+          <Grid item xs={9}>
+            <Typography variant="body">
+              Aggregated list of selected wallet transactions
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            xs={3}
+            sx={{ display: "flex", justifyContent: "flex-end" }}
+          >
+            <Button
+              onClick={onClickAddTags}
+              disabled={selectedTx.length === 0}
+              variant="outlined"
+            >
+              Add Tags
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
       <Grid container>
         <Grid item xs={12} lg={9} xl={7}>
           <Card sx={{ height: 400 }}>
@@ -80,11 +119,17 @@ const TxListContainer = ({ data, selectedWallets }) => {
               pageSize={10}
               rowsPerPageOptions={[5, 10]}
               checkboxSelection
-              onCellClick={(x) => console.log(x)}
+              onCellClick={handleOnClickCell}
             />
           </Card>
         </Grid>
       </Grid>
+      <AddTransactionTagModal
+        isOpen={isModalOpen}
+        onClose={onHandleClose}
+        handleSubmit={handleSubmit}
+        isLoading={false}
+      />
     </Box>
   );
 };
