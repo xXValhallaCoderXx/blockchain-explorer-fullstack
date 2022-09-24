@@ -11,11 +11,12 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+
+const settings = ["Sign-in", "Logout"];
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -35,18 +36,11 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const HeaderContainer = ({ open, handleDrawerOpen }) => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
+
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
@@ -69,8 +63,8 @@ const HeaderContainer = ({ open, handleDrawerOpen }) => {
         <Typography
           variant="h6"
           noWrap
-          component="a"
-          href="/"
+          component={Link}
+          to="/transactions"
           sx={{
             mr: 2,
             display: { xs: "none", md: "flex" },
@@ -90,7 +84,6 @@ const HeaderContainer = ({ open, handleDrawerOpen }) => {
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar
                 alt="Remy Sharp"
-                src="https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"
               />
             </IconButton>
           </Tooltip>

@@ -35,7 +35,7 @@ const FilterBarContainer = ({
       </Box>
       <Box display="flex" p={2} alignItems="center">
         <Typography variant="body" mr={1}>
-          Transaction Count:{" "}
+          Tx Count:{" "}
         </Typography>
         <Select
           id="tx-count"
@@ -43,6 +43,7 @@ const FilterBarContainer = ({
           value={txCount}
           size="small"
           onChange={handleChange}
+          sx={{minWidth: 70}}
         >
           {txCounts.map((tx, index) => (
             <MenuItem key={`tx-count-${index}`} value={tx.value}>
@@ -61,6 +62,7 @@ const FilterBarContainer = ({
           value={network}
           size="small"
           onChange={handleChange}
+          sx={{minWidth: 120}}
         >
           {networks.map((item, index) => (
             <MenuItem key={`network-${index}`} value={item.value}>

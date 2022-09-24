@@ -9,7 +9,6 @@ const drawerWidth = 240;
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
-
   alignItems: "center",
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
@@ -19,7 +18,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
-    height: "100vh",
+
     backgroundColor: "#EFF3F8",
     flexGrow: 1,
 
@@ -61,7 +60,9 @@ const CoreLayout = () => {
 };
 
 const Container = styled("div")`
-  height: 100vh;
+  height: 100%;
+  background-color: #EFF3F7;
+
 `;
 
 export default CoreLayout;

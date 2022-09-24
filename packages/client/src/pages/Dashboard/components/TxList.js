@@ -1,51 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { Typography, Box } from "@mui/material";
-import BasicTable from "../../../components/molecule/BasicTable";
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid } from "@mui/x-data-grid";
+import { format } from "date-fns";
 
-
-const columns  = [
-  { field: 'id', headerName: 'ID', width: 90 },
+const columns = [
+  { field: "id", fieldName: "ID" },
   {
-    field: 'firstName',
-    headerName: 'First name',
-    width: 150,
-
-  },
-  {
-    field: 'lastName',
-    headerName: 'Last name',
-    width: 150,
-  
-  },
-  {
-    field: 'age',
-    headerName: 'Age',
-    type: 'number',
-    width: 110,
-  
-  },
-  {
-    field: 'fullName',
-    headerName: 'Full name',
-    description: 'This column has a value getter and is not sortable.',
-
-    width: 160,
+    field: "date",
+    headerName: "Date",
+    width: 180,
     valueGetter: (params) =>
-      `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+      `${format(new Date(params.row.date), "yyyy-MM-dd  HH:mm:ss")}`,
   },
-];
-
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+  {
+    field: "from",
+    headerName: "Source",
+    width: 200,
+  },
+  {
+    field: "to",
+    headerName: "Destination",
+    width: 200,
+  },
+  {
+    field: "amount",
+    headerName: "Amount",
+    width: 110,
+  },
+  {
+    field: "direction",
+    headerName: "Direction",
+    description: "This column has a value getter and is not sortable.",
+    width: 110,
+  },
 ];
 
 const TxListContainer = ({ data, selectedWallets }) => {
@@ -53,10 +40,20 @@ const TxListContainer = ({ data, selectedWallets }) => {
 
   useEffect(() => {
     let flatData = [];
-    selectedWallets.forEach((address) => flatData.push(...data[address]));
-    const sortDates = flatData.sort((a, b) => {
+    selectedWallets.forEach((address, index) => {
+      const parsedWallets = data[address].map((wallet) => wallet);
+      flatData.push(...parsedWallets);
+    });
+
+    const indexItems = flatData.map((wallet, index) => ({
+      id: index,
+      ...wallet,
+    }));
+
+    const sortDates = indexItems.sort((a, b) => {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
+    console.log("SORT DARES ", sortDates);
     setParsedData(sortDates);
   }, [data]);
 
@@ -67,17 +64,16 @@ const TxListContainer = ({ data, selectedWallets }) => {
           Aggregated list of all walet transactions
         </Typography>
       </Box>
-      <Box sx={{ height: 600, width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={10}
-        rowsPerPageOptions={[5, 10]}
-        checkboxSelection
-    
-       
-      />
-    </Box>
+      <Box sx={{ height: 600, width: "100%" }}>
+        <DataGrid
+          rows={parsedData}
+          columns={columns}
+          pageSize={10}
+          rowsPerPageOptions={[5, 10]}
+          checkboxSelection
+          onCellClick={x => console.log(x)}
+        />
+      </Box>
       {/* <BasicTable data={parsedData} /> */}
     </Box>
   );

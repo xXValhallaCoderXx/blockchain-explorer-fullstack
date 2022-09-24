@@ -85,9 +85,9 @@ const DashboardContainer = () => {
     addresses && newQueryParameters.set("addresses", addresses);
     setSearchParams(newQueryParameters);
   };
-  console.log("TX", txApiResult.data);
+
   return (
-    <Box>
+    <Box >
       <FilterBarContainer
         onClickAdd={handleOnClickAdd}
         onChangeTx={handleOnClickTx}
