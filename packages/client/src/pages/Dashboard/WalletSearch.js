@@ -5,7 +5,11 @@ import { Typography, Grid, Box } from "@mui/material";
 import { TextField } from "formik-material-ui";
 import { DeleteOutlineOutlined, Add } from "@mui/icons-material";
 
-const WalletSearchContainer = ({ handleOnSubmit, addresses, onClickRemove }) => {
+const WalletSearchContainer = ({
+  handleOnSubmit,
+  addresses,
+  onClickRemove,
+}) => {
   const useArrayHelperRef = useRef(null);
   const wallets = addresses ? addresses : "";
   const walletsGroup = wallets?.split(",").map((address) => {
@@ -37,20 +41,35 @@ const WalletSearchContainer = ({ handleOnSubmit, addresses, onClickRemove }) => 
   };
 
   const handleOnClickRemove = (_index) => () => {
-    onClickRemove(formik.values.wallets[_index], formik.values)
+    onClickRemove(formik.values.wallets[_index], formik.values);
     useArrayHelperRef.current.remove(_index);
-
-  }
+  };
   return (
     <Box sx={{ padding: 2 }}>
       <Typography variant="h6" component="h2" sx={{ color: "#2D2D2C" }}>
         Wallet Explorer
       </Typography>
-      <Typography variant="caption" sx={{ color: "#2D2D2C" }}>
-        Enter valid EVM wallet addresses to retrieve their most recent
-        transactions
-      </Typography>
-      <Add sx={{ fontSize: 30, marginLeft: 2 }} onClick={onClickAdd} />
+      <Grid container>
+        <Grid xs={10}>
+          <Typography variant="caption" sx={{ color: "#2D2D2C" }}>
+            Enter valid EVM wallet addresses to retrieve their most recent
+            transactions
+          </Typography>
+        </Grid>
+        <Grid xs={2}>
+          <Add
+            sx={{
+              fontSize: 30,
+              marginLeft: 2,
+              "&:hover": {
+                cursor: "pointer",
+              },
+            }}
+            onClick={onClickAdd}
+          />
+        </Grid>
+      </Grid>
+
       <FormikProvider value={formik}>
         <form onSubmit={formik.handleSubmit}>
           <FieldArray
@@ -61,7 +80,7 @@ const WalletSearchContainer = ({ handleOnSubmit, addresses, onClickRemove }) => 
                 <Box
                   mt={2}
                   sx={{
-                    maxHeight: 130,
+                    maxHeight: 450,
                     overflowY: "scroll",
                     width: "100%",
                     "&::-webkit-scrollbar": {
@@ -84,10 +103,8 @@ const WalletSearchContainer = ({ handleOnSubmit, addresses, onClickRemove }) => 
                     <Grid
                       container
                       key={index}
-                      sx={{
-                        mt: index === 0 ? 1 : 0,
-                      }}
-                      mb={2}
+                      sx={{ mt: index === 0 ? 1 : 0 }}
+                      height={80}
                     >
                       <Grid item xs={10} sm={11}>
                         <Field
@@ -105,6 +122,11 @@ const WalletSearchContainer = ({ handleOnSubmit, addresses, onClickRemove }) => 
                       {index > 0 && (
                         <Grid item xs={2} sm={1} pt={1} pl={2}>
                           <DeleteOutlineOutlined
+                            sx={{
+                              "&:hover": {
+                                cursor: "pointer",
+                              },
+                            }}
                             onClick={handleOnClickRemove(index)}
                           />
                         </Grid>

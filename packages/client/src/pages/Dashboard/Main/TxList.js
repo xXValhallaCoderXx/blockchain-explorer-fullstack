@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Typography, Box } from "@mui/material";
-import BasicTable from "../../components/molecule/BasicTable";
+import BasicTable from "../../../components/molecule/BasicTable";
 
 const TxListContainer = ({ data }) => {
   const [parsedData, setParsedData] = useState([]);
@@ -24,7 +24,7 @@ const TxListContainer = ({ data }) => {
   };
   
   return (
-    <Box sx={{ padding: 3 }}>
+    <Box>
       {parsedData.length === 0 ? (
         <Box
           sx={{ height: 200, display: "flex" }}

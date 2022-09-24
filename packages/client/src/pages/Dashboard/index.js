@@ -3,11 +3,10 @@ import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import WalletSearch from "./WalletSearch";
 import TxOverview from "./TxOverview";
-import TxList from "./TxList";
 import { useGetTransactionListQuery } from "../../api/tx-api";
 import { useSearchParams } from "react-router-dom";
 import LoadingComponent from "../../components/molecule/LoadingComponent";
-
+import MainContainer from "./Main/Main";
 const DashboardContainer = () => {
   const [queryParam] = useSearchParams(); // Unpacking and retrieve id
   const addresses = queryParam.get("addresses");
@@ -38,18 +37,24 @@ const DashboardContainer = () => {
     setSearchParams(newQueryParameters);
   };
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={4}>
-        <Grid item xs={12} xl={9} order={{ xs: 2, xl: 1 }}>
-          <StyledCard elevation={0}>
+    <Box p={4} sx={{ flexGrow: 1, height: "100%" }}>
+      <Grid container spacing={4} sx={{ height: "100%" }}>
+        <Grid
+          sx={{ height: "100%" }}
+          item
+          xs={12}
+          xl={8}
+          order={{ xs: 2, xl: 1 }}
+        >
+          <>
             {isLoading ? (
-              <LoadingComponent message="Crypto Goblins are calculating, please wait..." />
+              <LoadingComponent message="Fetching Transactions, Please wait..." />
             ) : (
-              <TxList data={data} />
+              <MainContainer data={data} />
             )}
-          </StyledCard>
+          </>
         </Grid>
-        <Grid item xs={12} xl={3} order={{ xs: 1, xl: 2 }}>
+        <Grid item xs={12} xl={4} order={{ xs: 1, xl: 2 }}>
           <Grid container spacing={4}>
             <Grid item xs={12} sm={6} xl={12}>
               <StyledCard elevation={0}>
@@ -61,9 +66,9 @@ const DashboardContainer = () => {
               </StyledCard>
             </Grid>
             <Grid item xs={12} sm={6} xl={12}>
-              <StyledCard elevation={0}>
+              {/* <StyledCard elevation={0}>
                 <TxOverview data={data} />
-              </StyledCard>
+              </StyledCard> */}
             </Grid>
           </Grid>
         </Grid>

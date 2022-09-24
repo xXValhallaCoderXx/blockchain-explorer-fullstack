@@ -27,7 +27,36 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export default function PersistentDrawerLeft({ open, handleDrawerClose }) {
   const theme = useTheme();
+  // const [isOpen, setIsOpen] = React.useState(true);
+
+  // const toggleDrawer = (anchor, open) => (event) => {
+  //   if (
+  //     event.type === "keydown" &&
+  //     (event.key === "Tab" || event.key === "Shift")
+  //   ) {
+  //     return;
+  //   }
+
+  //   setIsOpen(!isOpen);
+  // };
   return (
+    // <Drawer anchor={"left"} open={isOpen} onClose={toggleDrawer}>
+    //   <List>
+    //     {[
+    //       { value: "dashboard", label: "Dashboard" },
+    //       { value: "tagged-tx", label: "Tagged Tx" },
+    //     ].map((text, index) => (
+    //       <ListItem key={ImageBitmapRenderingContext} disablePadding>
+    //         <ListItemButton>
+    //           <ListItemIcon>
+    //             {text.value === "dashboard" ? <DashboardIcon /> : <BookIcon />}
+    //           </ListItemIcon>
+    //           <ListItemText primary={text.label} />
+    //         </ListItemButton>
+    //       </ListItem>
+    //     ))}
+    //   </List>
+    // </Drawer>
     <Drawer
       sx={{
         width: drawerWidth,
@@ -51,18 +80,18 @@ export default function PersistentDrawerLeft({ open, handleDrawerClose }) {
         </IconButton>
       </DrawerHeader>
       <Divider />
-      <List>
-        {[{value: "dashboard", label: "Dashboard"}, {value: "tagged-tx", label: "Tagged Tx"}].map((text, index) => (
-          <ListItem key={ImageBitmapRenderingContext} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {text.value === "dashboard" ? <DashboardIcon /> : <BookIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text.label} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+    <List>
+      {[{value: "dashboard", label: "Dashboard"}, {value: "tagged-tx", label: "Tagged Tx"}].map((text, index) => (
+        <ListItem key={ImageBitmapRenderingContext} disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              {text.value === "dashboard" ? <DashboardIcon /> : <BookIcon />}
+            </ListItemIcon>
+            <ListItemText primary={text.label} />
+          </ListItemButton>
+        </ListItem>
+      ))}
+    </List>
     </Drawer>
   );
 }

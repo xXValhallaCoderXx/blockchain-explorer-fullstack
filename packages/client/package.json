@@ -17,6 +17,7 @@
     "formik": "^2.2.9",
     "formik-material-ui": "^4.0.0-alpha.2",
     "lodash.debounce": "^4.0.8",
+    "lodash.isempty": "^4.4.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^4.3.1",
     "react-dom": "^18.2.0",

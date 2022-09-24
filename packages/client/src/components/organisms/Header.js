@@ -74,27 +74,17 @@ const HeaderContainer = ({ open, handleDrawerOpen }) => {
           sx={{
             mr: 2,
             display: { xs: "none", md: "flex" },
-            fontFamily: "monospace",
+
             fontWeight: 700,
-            letterSpacing: ".3rem",
+            letterSpacing: ".2rem",
             color: "inherit",
             textDecoration: "none",
           }}
         >
-          Block Explorer
+          Wallet Explorer
         </Typography>
 
-        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-          {/* {pages.map((page) => (
-            <Button
-              key={page}
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              {page}
-            </Button>
-          ))} */}
-        </Box>
+        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
