@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Card, Grid } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { format } from "date-fns";
+import EmptySearchContainer from "../../components/molecule/EmptySearch";
 
 const columns = [
   { field: "id", fieldName: "ID" },
@@ -53,28 +55,36 @@ const TxListContainer = ({ data, selectedWallets }) => {
     const sortDates = indexItems.sort((a, b) => {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
-    console.log("SORT DARES ", sortDates);
     setParsedData(sortDates);
   }, [data]);
 
+  if (parsedData.length === 0) {
+    return (
+      <EmptySearchContainer message="Please select which wallets to view in Overview" />
+    );
+  }
+
   return (
     <Box>
-      <Box sx={{ marginTop: 2, marginBottom: 5 }}>
+      <Box sx={{ marginTop: 4, marginBottom: 2 }}>
         <Typography variant="body">
-          Aggregated list of all walet transactions
+          Aggregated list of selected wallet transactions
         </Typography>
       </Box>
-      <Box sx={{ height: 600, width: "100%" }}>
-        <DataGrid
-          rows={parsedData}
-          columns={columns}
-          pageSize={10}
-          rowsPerPageOptions={[5, 10]}
-          checkboxSelection
-          onCellClick={x => console.log(x)}
-        />
-      </Box>
-      {/* <BasicTable data={parsedData} /> */}
+      <Grid container>
+        <Grid item xs={12} lg={9} xl={7}>
+          <Card sx={{ height: 400 }}>
+            <DataGrid
+              rows={parsedData}
+              columns={columns}
+              pageSize={10}
+              rowsPerPageOptions={[5, 10]}
+              checkboxSelection
+              onCellClick={(x) => console.log(x)}
+            />
+          </Card>
+        </Grid>
+      </Grid>
     </Box>
   );
 };

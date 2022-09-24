@@ -1,4 +1,4 @@
-import searchEmpty from "../../../assets/image/empty-search.svg";
+import searchEmpty from "../../assets/image/empty-search.svg";
 import { Box, Typography } from "@mui/material";
 const EmptySearchContainer = ({ message = "Ehhh" }) => {
   return (
