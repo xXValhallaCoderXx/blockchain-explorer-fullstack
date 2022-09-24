@@ -1,68 +1,32 @@
-import {
-  IsBoolean,
-  IsNotEmpty,
-  IsNumberString,
-  IsString,
-  IsOptional,
-  IsDateString,
-  IsArray,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsDateString } from 'class-validator';
 
-export class CreateTaskDTO {
+export class CreateTransactionDTO {
   @IsNotEmpty()
   @IsString()
-  title: string;
+  tag: string;
 
   @IsNotEmpty()
-  @IsDateString()
-  deadline: string;
-}
+  @IsString()
+  from: string;
 
-export class UpdateTaskParams {
   @IsNotEmpty()
-  id: string;
-}
+  @IsString()
+  to: string;
 
-export class FetchTasksParams {
+  @IsNotEmpty()
+  @IsString()
+  amount: string;
+
+  @IsNotEmpty()
+  @IsString()
+  direction: string;
+
+  @IsNotEmpty()
   @IsDateString()
   date: string;
 }
 
-export class UpdateTaskDTO {
-  @IsOptional()
-  @IsString()
-  title: string;
-
-  @IsOptional()
-  @IsBoolean()
-  completed: boolean;
-
-  @IsOptional()
-  @IsBoolean()
-  focus: boolean;
-
-  @IsOptional()
+export class FetchTransactionParams {
   @IsDateString()
-  deadline: string;
-}
-
-export class FindOneParams {
-  @IsNumberString()
-  id: string;
-}
-
-export class MoveIncompleteDTO {
-  @IsDateString()
-  from: string;
-
-  @IsDateString()
-  to: string;
-}
-
-export class MoveTasksDTO {
-  @IsArray()
-  tasks: string[];
-
-  @IsDateString()
-  to: string;
+  date: string;
 }

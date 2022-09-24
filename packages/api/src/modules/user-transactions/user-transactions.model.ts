@@ -7,34 +7,45 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { User } from '../user/user.model';
-// import { Category } from '../categories/categories.model';
 
 @Table
 export class UserTransaction extends Model<UserTransaction> {
+  // Should be relation or very least ENUM
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  title: string;
+  tag: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  from: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  to: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  amount: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  direction: string;
 
   @Column({
     type: DataType.DATE,
     allowNull: false,
   })
-  deadline: string;
-
-  @Column({
-    type: DataType.BOOLEAN,
-    allowNull: false,
-  })
-  completed: boolean;
-
-  @Column({
-    type: DataType.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-  })
-  focus: boolean;
+  date: string;
 
   @ForeignKey(() => User)
   @Column({
@@ -45,14 +56,4 @@ export class UserTransaction extends Model<UserTransaction> {
 
   @BelongsTo(() => User, 'userId')
   user: User;
-
-  // @ForeignKey(() => Category)
-  // @Column({
-  //   type: DataType.INTEGER,
-  //   allowNull: false,
-  // })
-  // categoryId: number;
-
-  // @BelongsTo(() => Category, 'categoryId')
-  // category: Category;
 }

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/user/users.module';
 import { UserTxModule } from './modules/user-transactions/user-transactions.module';
+import { TransactionsModule } from './modules/transactions/transactions.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
@@ -35,6 +36,7 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
     UsersModule,
     UserTxModule,
+    TransactionsModule,
   ],
 })
 export class AppModule {}
