@@ -35,7 +35,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const HeaderContainer = ({ open, handleDrawerOpen }) => {
+const HeaderContainer = ({ open, handleDrawerOpen, isAuthenticated }) => {
 
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -63,8 +63,7 @@ const HeaderContainer = ({ open, handleDrawerOpen }) => {
         <Typography
           variant="h6"
           noWrap
-          component={Link}
-          to="/transactions"
+    
           sx={{
             mr: 2,
             display: { xs: "none", md: "flex" },
@@ -104,8 +103,8 @@ const HeaderContainer = ({ open, handleDrawerOpen }) => {
             onClose={handleCloseUserMenu}
           >
             {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">{setting}</Typography>
+              <MenuItem disabled={setting === "Logout" && isAuthenticated} key={setting} onClick={handleCloseUserMenu}>
+                <Typography  textAlign="center">{setting}</Typography>
               </MenuItem>
             ))}
           </Menu>

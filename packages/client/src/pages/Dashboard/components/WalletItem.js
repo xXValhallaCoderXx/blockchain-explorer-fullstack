@@ -52,15 +52,15 @@ const WalletItem = ({
           sx={{
             display: "flex",
             flexDirection: "row",
-            justifyContent: "space-around",
+       
           }}
         >
-          <Box>
-            <Typography>Sending</Typography>
+          <Box sx={{mr: 5}}>
+            <Typography sx={{color: "#ed788e"}}>Sending</Typography>
             {wallet.sendingCount}
           </Box>
           <Box>
-            <Typography>Recieving</Typography>
+            <Typography sx={{color: "#46c464"}}>Recieving</Typography>
             {wallet.recieveCount}
           </Box>
         </Box>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Header from "../organisms/Header";
@@ -39,6 +40,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
 
 const CoreLayout = () => {
   const [open, setOpen] = React.useState(false);
+  const isAuthenticated = useSelector(state => state.global.isAuthenticated)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -49,7 +51,7 @@ const CoreLayout = () => {
   };
   return (
     <Container>
-      <Header open={open} handleDrawerOpen={handleDrawerOpen} />
+      <Header isAuthenticated={isAuthenticated} open={open} handleDrawerOpen={handleDrawerOpen} />
       <SideDraw open={open} handleDrawerClose={handleDrawerClose} />
       <Main open={open}>
         <DrawerHeader />

@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import { Typography, Box, Card, Grid, Button } from "@mui/material";
+import { Typography, Box, Card, Grid, Button, Chip } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { format } from "date-fns";
 import EmptySearchContainer from "../../components/molecule/EmptySearch";
 import AddTransactionTagModal from "./components/AddTransactionTagModal";
 
 const columns = [
-  { field: "id", fieldName: "ID" },
+  { field: "id", headerName: "ID" },
+  { field: "type", headerName: "Tag", editable: true },
   {
     field: "date",
     headerName: "Date",
@@ -34,6 +35,24 @@ const columns = [
     field: "direction",
     headerName: "Direction",
     description: "This column has a value getter and is not sortable.",
+    renderCell: (params) => {
+      return (
+        <dispatchEvent index={params.row.id}>
+          {params.row.direction === "sending" ? (
+            <Chip
+              sx={{ width: 50, height: 25, backgroundColor: "#edd0de" }}
+              label="Out"
+            />
+          ) : (
+            <Chip
+              sx={{ width: 50, height: 25, backgroundColor: "#D1EFEA" }}
+              label="In"
+            />
+          )}
+        </dispatchEvent>
+      );
+    },
+
     width: 110,
   },
 ];
@@ -42,6 +61,7 @@ const TxListContainer = ({ data, selectedWallets }) => {
   const [parsedData, setParsedData] = useState([]);
   const [selectedTx, setSelectedTx] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [taggedTx, setTaggedTx] = useState(false);
 
   useEffect(() => {
     let flatData = [];
@@ -50,16 +70,29 @@ const TxListContainer = ({ data, selectedWallets }) => {
       flatData.push(...parsedWallets);
     });
 
-    const indexItems = flatData.map((wallet, index) => ({
-      id: index,
-      ...wallet,
-    }));
+    const indexItems = flatData.map((wallet, index) => {
+      return {
+        id: wallet.tx_hash,
+        type: "",
+        ...wallet,
+      };
+    });
 
     const sortDates = indexItems.sort((a, b) => {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
+
     setParsedData(sortDates);
   }, [data]);
+
+  useEffect(() => {
+    const hasTagged = parsedData.some((item) => item.type !== "");
+    if (hasTagged) {
+      setTaggedTx(true);
+    } else {
+      setTaggedTx(false);
+    }
+  }, [parsedData]);
 
   const handleOnClickCell = (x) => {
     if (selectedTx.includes(x.id)) {
@@ -80,19 +113,29 @@ const TxListContainer = ({ data, selectedWallets }) => {
     setIsModalOpen(true);
   };
 
+  const handleOnCellCommit = ({ id, field, value }, event) => {
+    const updatedData = parsedData.map((tx) => {
+      if (tx.id === id) {
+        tx.type = value;
+      }
+      return tx;
+    });
+    setParsedData(updatedData);
+  };
+
   if (parsedData.length === 0) {
     return (
       <EmptySearchContainer message="Please select which wallets to view in Overview" />
     );
   }
-
+  console.log("PARSED DATA: ", parsedData)
   return (
     <Box>
-      <Grid container sx={{ mt: 2, mb: 3 }}>
+      <Grid container sx={{ mt: 4, mb: 1 }}>
         <Grid item container xs={12} lg={9} xl={7}>
           <Grid item xs={9}>
             <Typography variant="body">
-              Aggregated list of selected wallet transactions
+              Enter your own tags to save these transactions in your vault
             </Typography>
           </Grid>
           <Grid
@@ -102,7 +145,7 @@ const TxListContainer = ({ data, selectedWallets }) => {
           >
             <Button
               onClick={onClickAddTags}
-              disabled={selectedTx.length === 0}
+              disabled={!taggedTx}
               variant="outlined"
             >
               Add Tags
@@ -117,9 +160,10 @@ const TxListContainer = ({ data, selectedWallets }) => {
               rows={parsedData}
               columns={columns}
               pageSize={10}
-              rowsPerPageOptions={[5, 10]}
-              checkboxSelection
+              rowsPerPageOptions={[5, 10, 15]}
               onCellClick={handleOnClickCell}
+              disableSelectionOnClick
+              onCellEditCommit={handleOnCellCommit}
             />
           </Card>
         </Grid>
@@ -129,6 +173,7 @@ const TxListContainer = ({ data, selectedWallets }) => {
         onClose={onHandleClose}
         handleSubmit={handleSubmit}
         isLoading={false}
+        data={parsedData}
       />
     </Box>
   );

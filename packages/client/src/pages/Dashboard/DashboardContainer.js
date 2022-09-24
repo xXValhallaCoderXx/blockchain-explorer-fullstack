@@ -46,15 +46,10 @@ const DashboardContainer = () => {
     }
   }, [addresses, txCount, chainId]);
 
-  useEffect(() => {
-    if (!txApiResult.isFetching && txApiResult.isSuccess) {
-      dispatch(setIsAddModalOpen({ isOpen: false }));
-    }
-  }, [txApiResult.isFetching]);
 
-  console.log('ddd', isAddModalOpen)
+
+  console.log("ddd", isAddModalOpen);
   const handleOnClickAdd = () => {
-  
     dispatch(setIsAddModalOpen({ isOpen: true }));
   };
 
@@ -70,11 +65,14 @@ const DashboardContainer = () => {
       newQueryParameters.set("addresses", address);
       setSearchParams(newQueryParameters);
     } else {
-      if (tempAddress.includes(",")) {
-      } else {
-        newQueryParameters.set("addresses", `${tempAddress},${address}`);
+      newQueryParameters.set("addresses", `${tempAddress},${address}`);
         setSearchParams(newQueryParameters);
-      }
+      // if (tempAddress.includes(",")) {
+      //   console.log("HERE", tempAddress)
+      // } else {
+      //   newQueryParameters.set("addresses", `${tempAddress},${address}`);
+      //   setSearchParams(newQueryParameters);
+      // }
     }
   };
 
@@ -102,8 +100,6 @@ const DashboardContainer = () => {
     setSearchParams(newQueryParameters);
   };
 
-
-
   const handleChange = (event, newValue) => setValue(newValue);
 
   return (
@@ -116,10 +112,11 @@ const DashboardContainer = () => {
         network={chainId}
       />
       <Box p={5}>
-        {initialLoading && (
+        {initialLoading ? (
           <LoadingComponent message={"Fetching wallet data..."} />
-        )}
-        {!initialLoading && (
+        ) : isEmpty(txApiResult.data) ? (
+          <EmptySearchContainer message="Start adding your wallets" />
+        ) : (
           <Box sx={{ width: "100%" }}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <Tabs value={value} onChange={handleChange}>
@@ -150,6 +147,7 @@ const DashboardContainer = () => {
         onClose={handleOnClose}
         handleSubmit={handleSubmit}
         isLoading={isRefetching || initialLoading}
+        txApiResult={txApiResult}
       />
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}

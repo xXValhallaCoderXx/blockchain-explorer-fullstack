@@ -47,13 +47,13 @@ export class TransactionsService {
   private parseExternalApiResponse(data: IExternalApiResponse) {
     const parsedData = data.items.map((item) => {
       const sourceWallet = data.address;
-
       return {
         direction: sourceWallet === item.to_address ? 'recieving' : 'sending',
         from: item.from_address,
         to: item.to_address,
         amount: ethers.utils.formatEther(item.value),
         date: item.block_signed_at,
+        tx_hash: item.tx_hash,
       };
     });
 

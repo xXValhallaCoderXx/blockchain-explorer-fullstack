@@ -1,11 +1,24 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import ModalContainer from "../../../components/molecule/Modal";
 import { Typography, Box, Button, Avatar } from "@mui/material";
 import { styled } from "@mui/system";
 import { TextField } from "formik-material-ui";
 import { object, string } from "yup";
 import { useFormik, FormikProvider, Field } from "formik";
+import { setIsAddModalOpen } from "../../../slices/dashboard-slice";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import walletIcon from "../../../assets/image/wallet-icon.png";
 
-const AddWalletModal = ({ isOpen, onClose, handleSubmit, isLoading }) => {
+const AddWalletModal = ({
+  isOpen,
+  onClose,
+  handleSubmit,
+  isLoading,
+  txApiResult,
+}) => {
+  const matches = useMediaQuery("(min-width:600px)");
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       address: "",
@@ -18,22 +31,30 @@ const AddWalletModal = ({ isOpen, onClose, handleSubmit, isLoading }) => {
       label: string().required("Wallet label is required"),
     }),
     onSubmit: (values, actions) => {
-        console.log("hmmm")
       handleSubmit && handleSubmit(values);
       actions.setSubmitting(false);
     },
   });
 
+  useEffect(() => {
+    if (!txApiResult.isFetching && txApiResult.isSuccess) {
+      formik.resetForm();
+      dispatch(setIsAddModalOpen({ isOpen: false }));
+    }
+  }, [txApiResult.isFetching]);
+
   const handleOnClose = () => {
     formik.resetForm();
     onClose && onClose();
-  }
+  };
 
   return (
     <ModalContainer onClose={handleOnClose} isOpen={isOpen}>
-      <Box sx={{ width: 500 }}>
+      <Box sx={{ width: matches ? 550 : 350 }}>
         <AvatarContainer>
-          <AvatarIcon sx={{ width: 70, height: 70 }} />
+          <AvatarIcon sx={{ width: 70, height: 70,border: "3px solid white" }}>
+            <img src={walletIcon} style={{ height: 50 }} alt="" />{" "}
+          </AvatarIcon>
         </AvatarContainer>
         <FormikProvider value={formik}>
           <form onSubmit={formik.handleSubmit}>
@@ -56,7 +77,7 @@ const AddWalletModal = ({ isOpen, onClose, handleSubmit, isLoading }) => {
                   sx={{ backgroundColor: "white" }}
                 />
               </Box>
-              <Box sx={{ height: 70, mt: 2 }}>
+              <Box sx={{ height: 70, mt: 0.5 }}>
                 <Field
                   fullWidth
                   name={`address`}
@@ -70,10 +91,19 @@ const AddWalletModal = ({ isOpen, onClose, handleSubmit, isLoading }) => {
               </Box>
             </StyledForm>
             <ActionButtons>
-              <Button variant="outlined" onClick={handleOnClose} disabled={isLoading}>
+              <Button
+                variant="outlined"
+                onClick={handleOnClose}
+                disabled={isLoading}
+              >
                 Cancel
               </Button>
-              <Button sx={{ ml: 3 }} variant="contained" type="submit" disabled={isLoading}>
+              <Button
+                sx={{ ml: 3 }}
+                variant="contained"
+                type="submit"
+                disabled={isLoading}
+              >
                 Submit
               </Button>
             </ActionButtons>
