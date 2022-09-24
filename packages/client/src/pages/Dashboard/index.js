@@ -8,6 +8,8 @@ import FilterBarContainer from "../../components/organisms/FilterBar";
 import { setIsAddModalOpen } from "../../slices/dashboard-slice";
 import DashboardView from "./DashboardView";
 import AddWalletModal from "./components/AddWalletModal";
+import LoadingComponent from "../../components/molecule/LoadingComponent";
+import { CircularProgress, Backdrop } from "@mui/material";
 
 const DashboardContainer = () => {
   const dispatch = useDispatch();
@@ -16,37 +18,19 @@ const DashboardContainer = () => {
   const txCount = queryParam.get("txCount");
   const chainId = queryParam.get("chainId");
   const newQueryParameters = new URLSearchParams();
-
   const isAddModalOpen = useSelector((state) => state.dashboard.isAddModalOpen);
-
   const [getTxApi, txApiResult] = useLazyGetTransactionListQuery();
-  console.log("TX API: ", txApiResult )
+
+  const isRefetching =
+    txApiResult.isSuccess && txApiResult.status === "pending";
+  const initialLoading = !txApiResult.isSuccess && txApiResult.isLoading;
+
+  
   useEffect(() => {
-    console.log("TX API USE EFFECT: ", txApiResult);
     if (txCount && chainId && addresses) {
-      console.log("TX API USE EFFSSSSSECT: ", addresses);
-      getTxApi({addresses, txCount, chainId})
+      getTxApi({ addresses, txCount, chainId });
     }
   }, [addresses, txCount, chainId]);
-
-  // const handleOnSubmit = (values) => {
-  //   newQueryParameters.set("txCount", 5);
-  //   newQueryParameters.set("chainId", 250);
-  //   const addresses = values.wallets.map((item) => item.address);
-
-  //   newQueryParameters.set("addresses", addresses.join(","));
-  //   setSearchParams(newQueryParameters);
-  // };
-
-  // const handleOnDelete = (removingWallet, values) => {
-  //   newQueryParameters.set("txCount", 5);
-  //   newQueryParameters.set("chainId", 250);
-  //   const filteredWallets = values.wallets.filter(
-  //     (wallet) => wallet.address !== removingWallet.address
-  //   );
-  //   newQueryParameters.set("addresses", filteredWallets.join(","));
-  //   setSearchParams(newQueryParameters);
-  // };
 
   const handleOnClickAdd = () => {
     dispatch(setIsAddModalOpen({ isOpen: true }));
@@ -63,6 +47,16 @@ const DashboardContainer = () => {
     // newQueryParameters.set("addresses", addresses.join(","));
     // setSearchParams(newQueryParameters);
   };
+
+  // const handleOnDelete = (removingWallet, values) => {
+  //   newQueryParameters.set("txCount", 5);
+  //   newQueryParameters.set("chainId", 250);
+  //   const filteredWallets = values.wallets.filter(
+  //     (wallet) => wallet.address !== removingWallet.address
+  //   );
+  //   newQueryParameters.set("addresses", filteredWallets.join(","));
+  //   setSearchParams(newQueryParameters);
+  // };
 
   const handleOnChangeNetwork = (value) => {
     txCount && newQueryParameters.set("txCount", txCount);
@@ -87,51 +81,24 @@ const DashboardContainer = () => {
         network={chainId}
       />
       <Box p={5}>
-        <DashboardView data={txApiResult.data} />
+        {initialLoading && (
+          <LoadingComponent message={"Fetching wallet data..."} />
+        )}
+        {!initialLoading && <DashboardView data={txApiResult.data} />}
       </Box>
       <AddWalletModal
         isOpen={isAddModalOpen}
         onClose={handleOnClose}
         handleSubmit={handleSubmit}
       />
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isRefetching}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
   );
 };
 
 export default DashboardContainer;
-
-// <Grid container spacing={4} sx={{ height: "100%" }}>
-// <Grid
-//   sx={{ height: "100%" }}
-//   item
-//   xs={12}
-//   xl={8}
-//   order={{ xs: 2, xl: 1 }}
-// >
-//   <>
-//     {isLoading ? (
-//       <LoadingComponent message="Fetching Transactions, Please wait..." />
-//     ) : (
-//       <MainContainer data={data} />
-//     )}
-//   </>
-// </Grid>
-// <Grid item xs={12} xl={4} order={{ xs: 1, xl: 2 }}>
-//   <Grid container spacing={4}>
-//     <Grid item xs={12} sm={6} xl={12}>
-//       <StyledCard elevation={0}>
-//         <WalletSearch
-//           handleOnSubmit={handleOnSubmit}
-//           addresses={addresses}
-//           onClickRemove={handleOnDelete}
-//         />
-//       </StyledCard>
-//     </Grid>
-//     <Grid item xs={12} sm={6} xl={12}>
-//       {/* <StyledCard elevation={0}>
-//         <TxOverview data={data} />
-//       </StyledCard> */}
-//     </Grid>
-//   </Grid>
-// </Grid>
-// </Grid>

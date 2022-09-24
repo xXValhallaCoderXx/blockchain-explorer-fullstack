@@ -23,21 +23,18 @@ export class TransactionsService {
     const URL_PARAMS = `quote-currency=USD&format=JSON&block-signed-at-asc=false&no-logs=false&page-size=${txCount}&key=${API_KEY}`;
 
     // Barbaric way of doing this - but - POC ^^
-    let apiResponse = {}
- 
+    const apiResponse = {};
     for (const address of parsedAddresses) {
       try {
         const response = await this.httpService.axiosRef.get(
           `${BASE_URL}/${chainId}/address/${address}/transactions_v2/?${URL_PARAMS}`,
         );
         const parsedData = this.parseExternalApiResponse(response.data.data);
-        apiResponse[address] = parsedData
-        await new Promise((r) => setTimeout(r, 1000));
+        apiResponse[address] = parsedData;
       } catch (error) {
         console.log('error: ', error);
       }
     }
-
     return apiResponse;
   }
 

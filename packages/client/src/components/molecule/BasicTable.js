@@ -37,7 +37,7 @@ export default function BasicTable({ data }) {
           {data.map((row, index) => (
             <TableRow
               key={index}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            
             >
               <TableCell>{format(new Date(row.date), "EEE, d LLL yyyy - HH:mm")}</TableCell>
               <TableCell>{row.amount}</TableCell>

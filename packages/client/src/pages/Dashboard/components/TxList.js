@@ -2,46 +2,26 @@ import React, { useState, useEffect } from "react";
 import { Typography, Box } from "@mui/material";
 import BasicTable from "../../../components/molecule/BasicTable";
 
-const TxListContainer = ({ data }) => {
+const TxListContainer = ({ data, selectedWallets }) => {
   const [parsedData, setParsedData] = useState([]);
 
   useEffect(() => {
-    const flatData = flattenData(data);
-
+    let flatData = [];
+    selectedWallets.forEach((address) => flatData.push(...data[address]));
     const sortDates = flatData.sort((a, b) => {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
     setParsedData(sortDates);
   }, [data]);
 
-  const flattenData = (obj) => {
-    const tempData = [];
-    for (var key in obj) {
-      const arrayItems = obj[key].map((item) => item);
-      tempData.push(...arrayItems);
-    }
-    return tempData;
-  };
-  
   return (
     <Box>
-      {parsedData.length === 0 ? (
-        <Box
-          sx={{ height: 200, display: "flex" }}
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Typography variant="h4">Enter wallets</Typography>
-        </Box>
-      ) : (
-        <>
-          <Typography variant="h4">Transaction List</Typography>
-          <Typography variant="body" ml={0.5}>
-            Aggregated list of all walet transactions
-          </Typography>
-          <BasicTable data={parsedData} />
-        </>
-      )}
+      <Box sx={{ marginTop: 2, marginBottom: 5 }}>
+        <Typography variant="body">
+          Aggregated list of all walet transactions
+        </Typography>
+      </Box>
+      <BasicTable data={parsedData} />
     </Box>
   );
 };

@@ -1,10 +1,15 @@
 import { useState } from "react";
+import {useSelector} from "react-redux";
 import isEmpty from "lodash.isempty";
 import { Box, Tab, Tabs } from "@mui/material";
 import EmptySearchContainer from "./components/EmptySearch";
 import WalletOverview from "./components/WalletOveriew";
+import TxListContainer from "./components/TxList";
 
 const MainContainer = ({ data }) => {
+  const selectedWallets = useSelector(
+    (state) => state.dashboard.selectedAddresses
+  );
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => setValue(newValue);
 
@@ -17,14 +22,14 @@ const MainContainer = ({ data }) => {
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Overview" />
-          <Tab label="Transaction List" />
+          <Tab label={`Transaction List - Selected (${selectedWallets.length})`} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
         <WalletOverview data={data} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <div>ssssssss</div>
+        <TxListContainer data={data} selectedWallets={selectedWallets} />
       </TabPanel>
     </Box>
   );
