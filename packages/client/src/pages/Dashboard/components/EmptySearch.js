@@ -1,6 +1,6 @@
 import searchEmpty from "../../../assets/image/empty-search.svg";
-import { Box } from "@mui/material";
-const EmptySearchContainer = () => {
+import { Box, Typography } from "@mui/material";
+const EmptySearchContainer = ({ message = "Ehhh" }) => {
   return (
     <Box
       sx={{ height: "100%" }}
@@ -11,11 +11,8 @@ const EmptySearchContainer = () => {
       alignItems="center"
       flexDirection="column"
     >
-      <img
-        style={{ maxHeight: 350 }}
-        src={searchEmpty}
-        alt="search-empty"
-      />
+      <img style={{ maxHeight: 350 }} src={searchEmpty} alt="search-empty" />
+      <Typography mt={2}>{message}</Typography>
     </Box>
   );
 };

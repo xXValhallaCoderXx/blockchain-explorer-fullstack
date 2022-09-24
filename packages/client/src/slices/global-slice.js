@@ -15,6 +15,6 @@ export const globalSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = globalSlice.actions;
+export const { setIsAuthenticated } = globalSlice.actions;
 
 export default globalSlice.reducer;

@@ -11,4 +11,4 @@ export const transactionListApi = createApi({
   }),
 });
 
-export const { useGetTransactionListQuery } = transactionListApi;
+export const { useGetTransactionListQuery, useLazyGetTransactionListQuery } = transactionListApi;
