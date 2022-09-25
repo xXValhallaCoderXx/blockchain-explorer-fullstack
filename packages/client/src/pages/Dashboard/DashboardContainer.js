@@ -80,6 +80,8 @@ const DashboardContainer = () => {
     }
   }, [loginUserApiResult]);
 
+
+
   useEffect(() => {
     if (registerUserApiResult.isSuccess) {
       setLocalError({
@@ -118,6 +120,7 @@ const DashboardContainer = () => {
   };
 
   const handleOnDelete = ({ address }) => {
+    console.log("DELETE ")
     chainId && newQueryParameters.set("chainId", chainId);
     txCount && newQueryParameters.set("txCount", txCount);
     const splitUrl = queryParam.get("addresses").split(",");
