@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/guards/jwt.auth.guard';
 import { UserTransactionsService } from './user-transactions.service';
-import { CreateTransactionDTO } from './user-transactions.dto';
+import { CreateTransactionDTO, BulkCreateTxDTO } from './user-transactions.dto';
 
 @Controller('user-transactions')
 export class UserTransactionsController {
@@ -27,5 +27,11 @@ export class UserTransactionsController {
   @Post('')
   async createUserTx(@Body() body: CreateTransactionDTO, @Request() req) {
     return this.userTxService.create(body, req);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('bulk')
+  async createBulkTasks(@Body() body: BulkCreateTxDTO, @Request() req) {
+    return this.userTxService.bulkCreate(body, req);
   }
 }
