@@ -1,23 +1,22 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
+import PolicyIcon from "@mui/icons-material/Policy";
+import { setModal } from "../../slices/global-slice";
 
 const drawerWidth = 240;
 
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Sign-in", "Logout"];
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -36,22 +35,24 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const HeaderContainer = ({ open, handleDrawerOpen }) => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
+const HeaderContainer = ({ open, handleDrawerOpen, isAuthenticated }) => {
+  const dispatch = useDispatch();
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleSelectItem = (x) => (y) => {
+    if (x === "Sign-in") {
+      dispatch(setModal({modal: "login", isOpen: true}))
+    } else if (x === "Logout"){
+      dispatch(setModal({modal: "logout", isOpen: true}))
+    }
     setAnchorElUser(null);
   };
 
@@ -67,43 +68,35 @@ const HeaderContainer = ({ open, handleDrawerOpen }) => {
         >
           <MenuIcon />
         </IconButton>
-        <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+        <PolicyIcon
+          sx={{
+            height: 40,
+            width: 40,
+            display: { xs: "none", md: "flex" },
+            mr: 2,
+          }}
+        />
         <Typography
           variant="h6"
           noWrap
-          component="a"
-          href="/"
           sx={{
             mr: 2,
             display: { xs: "none", md: "flex" },
-            fontFamily: "monospace",
+
             fontWeight: 700,
-            letterSpacing: ".3rem",
+            letterSpacing: ".2rem",
             color: "inherit",
             textDecoration: "none",
           }}
         >
-          Block Explorer
+          Wallet Explorer
         </Typography>
 
-        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-          {/* {pages.map((page) => (
-            <Button
-              key={page}
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              {page}
-            </Button>
-          ))} */}
-        </Box>
+        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar
-                alt="Remy Sharp"
-                src="https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"
-              />
+              <Avatar alt="Remy Sharp" />
             </IconButton>
           </Tooltip>
           <Menu
@@ -122,8 +115,15 @@ const HeaderContainer = ({ open, handleDrawerOpen }) => {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
-            {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
+            {settings.map((setting, index) => (
+              <MenuItem
+                disabled={
+                  (setting === "Logout" && !isAuthenticated) ||
+                  (setting === "Sign-in" && isAuthenticated)
+                }
+                key={index}
+                onClick={handleSelectItem(setting)}
+              >
                 <Typography textAlign="center">{setting}</Typography>
               </MenuItem>
             ))}
@@ -131,33 +131,6 @@ const HeaderContainer = ({ open, handleDrawerOpen }) => {
         </Box>
       </Toolbar>
     </AppBar>
-    // <AppBar position="static">
-    //   <Container maxWidth="xl">
-    //     <Toolbar disableGutters>
-
-    //       <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-    //       <Typography
-    //         variant="h5"
-    //         noWrap
-    //         component="a"
-    //         href=""
-    //         sx={{
-    //           mr: 2,
-    //           display: { xs: "flex", md: "none" },
-    //           flexGrow: 1,
-    //           fontFamily: "monospace",
-    //           fontWeight: 700,
-    //           letterSpacing: ".3rem",
-    //           color: "inherit",
-    //           textDecoration: "none",
-    //         }}
-    //       >
-    //         LOGO
-    //       </Typography>
-
-    //     </Toolbar>
-    //   </Container>
-    // </AppBar>
   );
 };
 

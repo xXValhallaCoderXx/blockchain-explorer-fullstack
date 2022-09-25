@@ -1,6 +1,1 @@
-const TaggedTransactionsContainer = () => {
-    return <div>TaggedTransactionsContainer</div>;
-  };
-  
-  export default TaggedTransactionsContainer;
-  
+export {default} from "./TaggedTransactionsContainer";

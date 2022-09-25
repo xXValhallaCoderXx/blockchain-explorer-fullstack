@@ -1,6 +1,6 @@
-import { Controller, Query, Get, Param, ValidationPipe } from '@nestjs/common';
+import { Controller, Query, Get, ValidationPipe } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
-import { GetTxQueryDTO, GetTxParamDTO } from './transactions.dto';
+import { GetTxQueryDTO } from './transactions.dto';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -18,7 +18,6 @@ export class TransactionsController {
     )
     query: GetTxQueryDTO,
   ) {
-    console.log("QUERY ",query)
-    return this.txService.getTransactionsByCount(query);
+    return this.txService.getTransactionsByCountV2(query);
   }
 }

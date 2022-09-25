@@ -1,5 +1,6 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Outlet, useMatch, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Header from "../organisms/Header";
 
@@ -9,7 +10,6 @@ const drawerWidth = 240;
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
-
   alignItems: "center",
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
@@ -19,10 +19,9 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
-    height: "100vh",
-    backgroundColor: "gray",
+    backgroundColor: "#EFF3F8",
     flexGrow: 1,
-    padding: theme.spacing(3),
+
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -40,6 +39,15 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
 
 const CoreLayout = () => {
   const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.global.isAuthenticated);
+  const isTaggedTx = useMatch("/tagged-tx");
+
+  useEffect(() => {
+    if (isTaggedTx && !isAuthenticated) {
+      navigate("/transactions");
+    }
+  }, [isAuthenticated]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -50,7 +58,11 @@ const CoreLayout = () => {
   };
   return (
     <Container>
-      <Header open={open} handleDrawerOpen={handleDrawerOpen} />
+      <Header
+        isAuthenticated={isAuthenticated}
+        open={open}
+        handleDrawerOpen={handleDrawerOpen}
+      />
       <SideDraw open={open} handleDrawerClose={handleDrawerClose} />
       <Main open={open}>
         <DrawerHeader />
@@ -61,7 +73,8 @@ const CoreLayout = () => {
 };
 
 const Container = styled("div")`
-  height: 100vh;
+  height: 100%;
+  background-color: #eff3f7;
 `;
 
 export default CoreLayout;

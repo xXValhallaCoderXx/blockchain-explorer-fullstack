@@ -27,9 +27,8 @@ export interface ITxItem {
   value: string;
 }
 
-
 export interface IApiResponse {
-    dateTime: string;
-    amount: number;
-    direction: "recieve" | "send"
+  dateTime: string;
+  amount: number;
+  direction: 'recieve' | 'send';
 }
