@@ -2,12 +2,7 @@ import { Box, Card, Typography, Chip, Avatar, Grid } from "@mui/material";
 import walletIcon from "assets/image/wallet-icon.png";
 
 const WalletItem = ({ index, wallet, onClickCard, selectedWallets }) => {
-  console.log("WALLET: ", wallet);
-
-  // const firstDog = Array.isArray(wallet.tags) && wallet[].length ? wallet[0] : {};
-
-  const headers = Object.keys(wallet.tags);
-  console.log("jeaders", headers);
+  const tagKeys = Object.keys(wallet.tags);
   return (
     <Card
       onClick={onClickCard(wallet)}
@@ -61,13 +56,10 @@ const WalletItem = ({ index, wallet, onClickCard, selectedWallets }) => {
               alignItems="flex-end"
               pr={2}
             >
-              {headers.map((item) => {
-                const tag = item;
-                const x = wallet.tags[item];
-
+              {tagKeys.map((item) => {
                 return (
                   <Typography variant="caption">
-                    {tag}: {x}
+                    {item}: {wallet.tags[item]}
                   </Typography>
                 );
               })}
