@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 
 import { UserTransaction } from './user-transactions.model';
@@ -15,12 +15,35 @@ export class UserTransactionsService {
   ) {}
 
   async findAll(req: any, query: any): Promise<UserTransaction[]> {
-    return this.userTxModel.findAll({
+    const userTx = await this.userTxModel.findAll({
       where: {
         userId: req.user.id,
       },
       order: [['createdAt', 'ASC']],
     });
+
+    const apiResponse = {};
+
+    userTx.forEach((tx) => {
+      // @ts-ignore
+      const { direction, from, to, ...rest } = tx.dataValues;
+      const address = direction === 'sending' ? from : to;
+      const item = {
+        address,
+        direction,
+        from,
+        to,
+        ...rest,
+      };
+      if (apiResponse[address]) {
+        // Push tinto array
+        apiResponse[address].push(item);
+      } else {
+        apiResponse[address] = [item];
+      }
+    });
+    // @ts-ignore
+    return apiResponse;
   }
 
   async create(data: CreateTransactionDTO, req: any): Promise<any> {
@@ -40,12 +63,10 @@ export class UserTransactionsService {
     if (!user) {
       return null;
     }
-    console.log('DATA: ', data);
     const injectUser = data.transactions.map((tx) => ({
       ...tx,
       userId: user.id,
     }));
-    console.log('INJECT USERS: ', injectUser);
     return await this.userTxModel.bulkCreate<UserTransaction>(injectUser);
   }
 }

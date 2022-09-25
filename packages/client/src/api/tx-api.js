@@ -13,7 +13,7 @@ export const transactionListApi = createApi({
     },
   }),
 
-  tagTypes: ["WalletTx"],
+  tagTypes: ["WalletTx", "UserTx"],
   endpoints: (builder) => ({
     getTransactionList: builder.query({
       query: ({ txCount, chainId, addresses }) =>
@@ -28,6 +28,10 @@ export const transactionListApi = createApi({
           body,
         };
       },
+    }),
+    getTaggedTx: builder.query({
+      query: () => `/user-transactions`,
+      providesTags: ["UserTx"],
     }),
     registerUser: builder.mutation({
       query: (body) => {
@@ -56,4 +60,5 @@ export const {
   useCreateUserTransactionsMutation,
   useLoginUserMutation,
   useRegisterUserMutation,
+  useGetTaggedTxQuery
 } = transactionListApi;

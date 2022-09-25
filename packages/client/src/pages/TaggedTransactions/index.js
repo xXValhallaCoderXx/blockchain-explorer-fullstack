@@ -1,6 +1,9 @@
+import { useGetTaggedTxQuery } from "../../api/tx-api";
+
 const TaggedTransactionsContainer = () => {
-    return <div>TaggedTransactionsContainer</div>;
-  };
-  
-  export default TaggedTransactionsContainer;
-  
+  const { data } = useGetTaggedTxQuery();
+  console.log("data", data);
+  return <div>TaggedTransactionsContainer</div>;
+};
+
+export default TaggedTransactionsContainer;
