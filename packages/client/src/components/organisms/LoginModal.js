@@ -13,7 +13,6 @@ const LoginModal = ({ isOpen, onClose, handleSubmit }) => {
   const matches = useMediaQuery("(min-width:600px)");
   const dispatch = useDispatch();
 
-  console.log("LOGIN: ", isOpen);
   const formik = useFormik({
     initialValues: {
       email: "",

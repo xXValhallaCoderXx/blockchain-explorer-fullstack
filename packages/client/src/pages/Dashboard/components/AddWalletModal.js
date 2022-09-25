@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import ModalContainer from "components/molecule/Modal";
-import { Typography, Box, Button, Avatar } from "@mui/material";
+import { ConfirmationModal } from "../../../components/molecule";
+
+import { Typography, Box, Avatar } from "@mui/material";
 import { styled } from "@mui/system";
 import { TextField } from "formik-material-ui";
 import { object, string } from "yup";
@@ -50,69 +51,55 @@ const AddWalletModal = ({
   };
 
   return (
-    <ModalContainer onClose={handleOnClose} isOpen={isOpen}>
+    <ConfirmationModal
+      isLoading={isLoading}
+      onSubmit={formik.handleSubmit}
+      onClose={handleOnClose}
+      isOpen={isOpen}
+    >
       <Box sx={{ width: matches ? 550 : 350 }}>
         <AvatarContainer>
-          <AvatarIcon sx={{ width: 70, height: 70,border: "3px solid white" }}>
+          <AvatarIcon sx={{ width: 70, height: 70, border: "3px solid white" }}>
             <img src={walletIcon} style={{ height: 50 }} alt="" />{" "}
           </AvatarIcon>
         </AvatarContainer>
         <FormikProvider value={formik}>
-          <form onSubmit={formik.handleSubmit}>
-            <Typography variant="h6" mt={3}>
-              Enter a new wallet
-            </Typography>
-            <Typography sx={{ color: "gray", fontSize: 14 }} variant="caption2">
-              Enter a wallet label to easily identify it
-            </Typography>
-            <StyledForm>
-              <Box sx={{ height: 70, mt: 2 }}>
-                <Field
-                  fullWidth
-                  name={`label`}
-                  value={formik.values.label}
-                  onChange={formik.handleChange}
-                  label="Label"
-                  component={TextField}
-                  size="small"
-                  sx={{ backgroundColor: "white" }}
-                />
-              </Box>
-              <Box sx={{ height: 70, mt: 0.5 }}>
-                <Field
-                  fullWidth
-                  name={`address`}
-                  value={formik.values.address}
-                  onChange={formik.handleChange}
-                  label="Address"
-                  component={TextField}
-                  size="small"
-                  sx={{ backgroundColor: "white" }}
-                />
-              </Box>
-            </StyledForm>
-            <ActionButtons>
-              <Button
-                variant="outlined"
-                onClick={handleOnClose}
-                disabled={isLoading}
-              >
-                Cancel
-              </Button>
-              <Button
-                sx={{ ml: 3 }}
-                variant="contained"
-                type="submit"
-                disabled={isLoading}
-              >
-                Submit
-              </Button>
-            </ActionButtons>
-            <input type="submit" hidden />
-          </form>
+          <Typography variant="h6" mt={3}>
+            Enter a new wallet
+          </Typography>
+          <Typography sx={{ color: "gray", fontSize: 14 }} variant="caption2">
+            Enter a wallet label to easily identify it
+          </Typography>
+          <StyledForm onSubmit={formik.handleSubmit}>
+            <Box sx={{ height: 70, mt: 2 }}>
+              <Field
+                fullWidth
+                name={`label`}
+                value={formik.values.label}
+                onChange={formik.handleChange}
+                label="Label"
+                component={TextField}
+                size="small"
+                sx={{ backgroundColor: "white" }}
+              />
+            </Box>
+            <Box sx={{ height: 70, mt: 0.5 }}>
+              <Field
+                fullWidth
+                name={`address`}
+                value={formik.values.address}
+                onChange={formik.handleChange}
+                label="Address"
+                component={TextField}
+                size="small"
+                sx={{ backgroundColor: "white" }}
+              />
+            </Box>
+          </StyledForm>
+          <input type="submit" hidden />
         </FormikProvider>
       </Box>
-    </ModalContainer>
+    </ConfirmationModal>
   );
 };
 
@@ -130,13 +117,6 @@ const StyledForm = styled("form")`
   display: flex;
   flex-direction: column;
   margin-top: 10px;
-`;
-
-const ActionButtons = styled(Box)`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  margin-top: 20px;
 `;
 
 export default AddWalletModal;

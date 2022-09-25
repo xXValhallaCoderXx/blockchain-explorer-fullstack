@@ -6,8 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
 import { setIsAuthenticated, setModal } from "slices/global-slice";
-import { removeAddress } from "slices/dashboard-slice";
-import { setIsAddModalOpen } from "slices/dashboard-slice";
+import { removeAddress, setIsAddModalOpen } from "slices/dashboard-slice";
 
 import {
   useLazyGetTransactionListQuery,
@@ -28,8 +27,7 @@ import WalletOverview from "./WalletOverview";
 import TxListContainer from "./TransactionList";
 
 import AddWalletModal from "./components/AddWalletModal";
-import LoginModal from "./components/LoginModal";
-import RegisterModal from "./components/RegisterModal";
+import { LoginModal, RegisterModal } from "components/organisms";
 
 const DashboardContainer = () => {
   const dispatch = useDispatch();
@@ -88,8 +86,17 @@ const DashboardContainer = () => {
     dispatch(setIsAddModalOpen({ isOpen: false }));
   };
 
-  const handleSubmitCreateTx = (transactions) => {
-    console.log("container: ");
+  const handleSubmitCreateTx = ({ address, label }) => {
+    chainId && newQueryParameters.set("chainId", chainId);
+    txCount && newQueryParameters.set("txCount", txCount);
+    let tempAddress = queryParam.get("addresses");
+    if (!tempAddress) {
+      newQueryParameters.set("addresses", address);
+      setSearchParams(newQueryParameters);
+    } else {
+      newQueryParameters.set("addresses", `${tempAddress},${address}`);
+      setSearchParams(newQueryParameters);
+    }
   };
 
   const handleOnDelete = ({ address }) => {
@@ -129,7 +136,7 @@ const DashboardContainer = () => {
   const onLoginSubmit = (values) => {
     loginUserApi(values);
   };
-  console.log("LOGIN USER: ", loginUserApiResult);
+
   const handleCloseSnackbar = () => {
     setLocalError({});
   };

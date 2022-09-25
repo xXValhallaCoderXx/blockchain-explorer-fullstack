@@ -115,13 +115,13 @@ const HeaderContainer = ({ open, handleDrawerOpen, isAuthenticated }) => {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
-            {settings.map((setting) => (
+            {settings.map((setting, index) => (
               <MenuItem
                 disabled={
                   (setting === "Logout" && !isAuthenticated) ||
                   (setting === "Sign-in" && isAuthenticated)
                 }
-                key={setting}
+                key={index}
                 onClick={handleSelectItem(setting)}
               >
                 <Typography textAlign="center">{setting}</Typography>

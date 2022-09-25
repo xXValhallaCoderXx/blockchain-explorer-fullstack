@@ -92,7 +92,7 @@ export default function PersistentDrawerLeft({ open, handleDrawerClose }) {
           { value: "tagged-tx", label: "My Transactions" },
         ].map((text, index) => (
           <ListItem
-            key={ImageBitmapRenderingContext}
+            key={index}
             disablePadding
             disabled={text.value === "tagged-tx" && !isAuthenticated}
             onClick={handleOnClick(text)}

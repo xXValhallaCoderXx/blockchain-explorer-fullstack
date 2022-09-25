@@ -54,9 +54,9 @@ const AddTransactionTagModal = ({
         </Grid>
       </Grid>
       <List>
-        {filtered.map((tx) => {
+        {filtered.map((tx, index) => {
           return (
-            <ListItem style={{ padding: 0 }}>
+            <ListItem key={index} style={{ padding: 0 }}>
               <Grid container>
                 <Grid item xs={4}>
                   <Typography>{tx.type}</Typography>
