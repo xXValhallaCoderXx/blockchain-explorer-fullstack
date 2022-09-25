@@ -12,6 +12,10 @@
 - `yarn start:client` to run the front end application
 - `yarn start:api` to run the backend applicaiton
 
+### Deployed
+ - Client on firebase pages
+ - Server / DB on Heroku
+- URL: https://block-explorer-dev.web.app
 
 ## Wallet Transactions Explorer
 - Input different wallet addresses and list in a sorted order
