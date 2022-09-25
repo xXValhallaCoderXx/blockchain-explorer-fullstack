@@ -12,7 +12,7 @@ const TxOverviewContainer = ({ data }) => {
       <Typography variant="h5">Transaction Overview</Typography>
       <Grid container>
         <Grid item xs={4} pt={3}>
-          <Typography>Total Transactions: {data.totalTxCount}</Typography>
+          <Typography>Total No: {data.totalTxCount}</Typography>
           <Typography mt={1} mb={1}>
             Total Outgoing: {data.sendTxCount}
           </Typography>

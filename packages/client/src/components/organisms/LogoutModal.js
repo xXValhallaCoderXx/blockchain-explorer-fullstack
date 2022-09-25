@@ -13,8 +13,8 @@ const LogoutModal = ({ isOpen, onClose, handleSubmit }) => {
       onClose={onClose}
       isOpen={isOpen}
     >
-      <Box sx={{ width: matches ? 350 : 350 }}>
-        <Typography variant="h6">Are you sure you want to logout?</Typography>
+      <Box sx={{ width: matches ? 350 : 320 }}>
+        <Typography variant="body" sx={{fontSize: 18}} >Are you sure you want to logout?</Typography>
       </Box>
     </ConfirmationModal>
   );

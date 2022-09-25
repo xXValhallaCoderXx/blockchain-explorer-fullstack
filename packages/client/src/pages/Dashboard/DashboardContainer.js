@@ -59,7 +59,7 @@ const DashboardContainer = () => {
       getTxApi({ addresses, txCount, chainId });
     }
   }, [addresses, txCount, chainId]);
-
+  console.log("GO")
   useEffect(() => {
     if (loginUserApiResult.isSuccess) {
       window.localStorage.setItem(
@@ -118,15 +118,12 @@ const DashboardContainer = () => {
   };
 
   const handleOnDelete = ({ address }) => {
-    console.log("WAA", address);
     chainId && newQueryParameters.set("chainId", chainId);
     txCount && newQueryParameters.set("txCount", txCount);
     const splitUrl = queryParam.get("addresses").split(",");
-    console.log("WAA", splitUrl);
     const filteredWallets = splitUrl.find(
       (wallet) => wallet.toLowerCase() !== address.toLowerCase()
     );
-    console.log("WAA", filteredWallets);
     if (Array.isArray(filteredWallets) && filteredWallets[0] !== "undefined") {
       newQueryParameters.set("addresses", filteredWallets);
     }
@@ -180,7 +177,9 @@ const DashboardContainer = () => {
         txCount={txCount}
         network={chainId}
       />
-      <Box p={5}>
+      <Box sx={{
+        p: {xs: 2, md: 4}
+      }}>
         {initialLoading ? (
           <LoadingState message={"Fetching wallet data..."} />
         ) : isEmpty(txApiResult.data) ? (
@@ -222,11 +221,13 @@ const DashboardContainer = () => {
         handleSubmit={onLoginSubmit}
         isOpen={modals["login"]}
         onClose={handleCloseLoginModal}
+        isLoading={loginUserApiResult.isLoading}
       />
       <RegisterModal
         isOpen={modals["register"]}
         onClose={handleCloseRegisterModal}
         handleSubmit={onSubmitRegisterUser}
+        isLoading={registerUserApiResult.isLoading}
       />
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}

@@ -57,7 +57,7 @@ const AddWalletModal = ({
       onClose={handleOnClose}
       isOpen={isOpen}
     >
-      <Box sx={{ width: matches ? 550 : 350 }}>
+      <Box sx={{ width: matches ? 550 : 320 }}>
         <AvatarContainer>
           <AvatarIcon sx={{ width: 70, height: 70, border: "3px solid white" }}>
             <img src={walletIcon} style={{ height: 50 }} alt="" />{" "}

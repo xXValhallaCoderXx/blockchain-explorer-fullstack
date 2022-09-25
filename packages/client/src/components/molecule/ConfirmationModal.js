@@ -16,6 +16,7 @@ const ConfirmationModal = ({ isOpen, onClose, onSubmit, isLoading, children }) =
           variant="contained"
           type="submit"
           onClick={onSubmit}
+          loading={isLoading}
           disabled={isLoading}
         >
           Submit

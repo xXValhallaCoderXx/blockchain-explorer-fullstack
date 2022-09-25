@@ -8,7 +8,7 @@ import { useFormik, FormikProvider, Field } from "formik";
 import ConfirmationModal from "components/molecule/ConfirmationModal";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { setModal } from "slices/global-slice";
-const RegisterModal = ({ isOpen, onClose, handleSubmit }) => {
+const RegisterModal = ({ isOpen, onClose, handleSubmit, isLoading }) => {
   const matches = useMediaQuery("(min-width:600px)");
   const dispatch = useDispatch();
   const formik = useFormik({
@@ -50,8 +50,9 @@ const RegisterModal = ({ isOpen, onClose, handleSubmit }) => {
       onSubmit={handleOnSubmit}
       onClose={handleOnClose}
       isOpen={isOpen}
+      isLoading={isLoading}
     >
-      <Box sx={{ width: matches ? 550 : 350 }}>
+      <Box sx={{ width: matches ? 550 : 320 }}>
         <FormikProvider value={formik}>
           <form onSubmit={formik.handleSubmit}>
             <Typography variant="h5">Register Account</Typography>

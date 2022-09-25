@@ -92,7 +92,7 @@ const HeaderContainer = ({ open, handleDrawerOpen, isAuthenticated }) => {
           Wallet Explorer
         </Typography>
 
-        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
+        <Box sx={{ flexGrow: 1, display: {  xs: "flex" } }}></Box>
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

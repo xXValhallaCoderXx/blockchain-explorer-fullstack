@@ -9,7 +9,7 @@ import ConfirmationModal from "components/molecule/ConfirmationModal";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { setModal } from "slices/global-slice";
 
-const LoginModal = ({ isOpen, onClose, handleSubmit }) => {
+const LoginModal = ({ isOpen, onClose, handleSubmit, isLoading }) => {
   const matches = useMediaQuery("(min-width:600px)");
   const dispatch = useDispatch();
 
@@ -47,8 +47,9 @@ const LoginModal = ({ isOpen, onClose, handleSubmit }) => {
       onSubmit={handleOnSubmit}
       onClose={handleOnClose}
       isOpen={isOpen}
+      isLoading={isLoading}
     >
-      <Box sx={{ width: matches ? 550 : 350 }}>
+      <Box sx={{ width: matches ? 550 : 310 }}>
         <FormikProvider value={formik}>
           <form onSubmit={formik.handleSubmit}>
             <Typography variant="h5">Explorer Login</Typography>

@@ -1,9 +1,11 @@
 import { useMemo } from "react";
+import isEmpty from "lodash.isempty";
 import { useSelector, useDispatch } from "react-redux";
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, Typography } from "@mui/material";
 import TxOverviewContainer from "./components/TxOverview";
 import WalletItem from "./components/WalletItem";
 import { removeAddress, addAddress } from "../../slices/tagged-tx-slice";
+import EmptySearchContainer from "../../components/molecule/EmptySearch";
 
 export const WalletOverviewContainer = ({ data }) => {
   const dispatch = useDispatch();
@@ -92,12 +94,28 @@ export const WalletOverviewContainer = ({ data }) => {
     }
   };
 
+  if (isEmpty(data)) {
+    return (
+      <Box mt={4}>
+        <EmptySearchContainer message="Please tag some transactions via Dashboard" />
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ pt: 4 }}>
-      <Grid container spacing={4}>
-        <Grid container item lg={8} spacing={5}>
+      <Typography sx={{mb: 2}}>Select which wallet to view their transactions</Typography>
+      <Grid container spacing={2}>
+        <Grid
+          container
+          item
+          xs={12}
+          lg={8}
+          spacing={5}
+          order={{ xs: 2, md: 1 }}
+        >
           {computeWaleltOverview.map((wallet, index) => (
-            <Grid item lg={4}>
+            <Grid item xs={12} md={5} xl={4}>
               <WalletItem
                 key={index}
                 index={index}
@@ -108,7 +126,7 @@ export const WalletOverviewContainer = ({ data }) => {
             </Grid>
           ))}
         </Grid>
-        <Grid item lg={4}>
+        <Grid item xs={12} lg={4} order={{ xs: 1, md: 2 }}>
           <TxOverviewContainer data={computedData.txOverviewStats} />
         </Grid>
       </Grid>

@@ -44,8 +44,15 @@ const WalletItem = ({
           </Typography>
           {wallet.label || `Wallet ${index}`}
         </Box>
-        <Box mt={2}>
-          <Typography sx={{ fontWeight: 600, color: "#999999" }}>
+        <Box mt={2} sx={{ overflow: "hidden" }}>
+          <Typography
+            sx={{
+              fontWeight: 600,
+              color: "#999999",
+              whiteSpace: "nowrap",
+              textOverflow: "ellipsis",
+            }}
+          >
             Address
           </Typography>
           {wallet.address}
@@ -60,14 +67,22 @@ const WalletItem = ({
         >
           <Box sx={{ mr: 5 }}>
             <Chip
-              sx={{backgroundColor: "#ef6b6b", color: "white", fontWeight: 600}}
+              sx={{
+                backgroundColor: "#ef6b6b",
+                color: "white",
+                fontWeight: 600,
+              }}
               avatar={<Avatar> {wallet.sendingCount}</Avatar>}
               label="Sending"
             />
           </Box>
           <Box>
-          <Chip
-              sx={{backgroundColor: "#62c960", color: "white", fontWeight: 600}}
+            <Chip
+              sx={{
+                backgroundColor: "#62c960",
+                color: "white",
+                fontWeight: 600,
+              }}
               avatar={<Avatar> {wallet.recieveCount}</Avatar>}
               label="Recieving"
             />

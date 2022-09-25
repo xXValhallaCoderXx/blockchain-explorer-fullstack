@@ -131,16 +131,17 @@ const TxListContainer = ({ data, selectedWallets }) => {
   console.log("PARSED DATA: ", parsedData)
   return (
     <Box>
-      <Grid container sx={{ mt: 4, mb: 1 }}>
+      <Grid container sx={{ mt: 4, mb: {xs: 4, md: 1} }}>
         <Grid item container xs={12} lg={9} xl={7}>
-          <Grid item xs={9}>
+          <Grid item xs={8} sm={9}>
             <Typography variant="body">
               Enter your own tags to save these transactions in your vault
             </Typography>
           </Grid>
           <Grid
             item
-            xs={3}
+            xs={4} 
+            sm={3}
             sx={{ display: "flex", justifyContent: "flex-end" }}
           >
             <Button
