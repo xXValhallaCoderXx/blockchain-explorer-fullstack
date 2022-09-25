@@ -7,14 +7,13 @@ import { object, string } from "yup";
 import { useFormik, FormikProvider, Field } from "formik";
 import ConfirmationModal from "../../../components/molecule/ConfirmationModal";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { setLoginModal, setRegisterModal } from "../../../slices/global-slice";
-
+import { setModal } from "../../../slices/global-slice";
 
 const LoginModal = ({ isOpen, onClose, handleSubmit }) => {
   const matches = useMediaQuery("(min-width:600px)");
   const dispatch = useDispatch();
 
-  console.log("LOGIN: ", isOpen)
+  console.log("LOGIN: ", isOpen);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -36,13 +35,12 @@ const LoginModal = ({ isOpen, onClose, handleSubmit }) => {
   };
 
   const handleOnSubmit = () => {
-    console.log("lsls");
     formik.handleSubmit();
   };
 
   const onClickSignup = () => {
-    dispatch(setLoginModal(false));
-    dispatch(setRegisterModal(true));
+    dispatch(setModal({modal: "login", isOpen: false}))
+    dispatch(setModal({modal: "register", isOpen: true}))
   };
 
   return (
@@ -90,7 +88,7 @@ const LoginModal = ({ isOpen, onClose, handleSubmit }) => {
         </FormikProvider>
         <Typography variant="caption">
           Dont have an account?{" "}
-          <span style={{ fontWeight: 600 }} onClick={onClickSignup}>
+          <span style={{ fontWeight: 600, cursor: "pointer" }} onClick={onClickSignup}>
             Sign up here
           </span>
         </Typography>

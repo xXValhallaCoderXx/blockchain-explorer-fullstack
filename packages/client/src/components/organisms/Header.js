@@ -12,7 +12,7 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import PolicyIcon from "@mui/icons-material/Policy";
-import { setLoginModal, setModal } from "../../slices/global-slice";
+import { setModal } from "../../slices/global-slice";
 
 const drawerWidth = 240;
 
@@ -49,9 +49,8 @@ const HeaderContainer = ({ open, handleDrawerOpen, isAuthenticated }) => {
 
   const handleSelectItem = (x) => (y) => {
     if (x === "Sign-in") {
-      dispatch(setLoginModal(true));
+      dispatch(setModal({modal: "login", isOpen: true}))
     } else if (x === "Logout"){
-      console.log('WHAT')
       dispatch(setModal({modal: "logout", isOpen: true}))
     }
     setAnchorElUser(null);

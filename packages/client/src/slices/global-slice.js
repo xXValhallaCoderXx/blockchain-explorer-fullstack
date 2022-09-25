@@ -5,8 +5,10 @@ const initialState = {
   isSigninModalOpen: false,
   isRegisterModalOpen: false,
   modals: {
-    logout: false
-  }
+    logout: false,
+    login: false,
+    register: false,
+  },
 };
 
 export const globalSlice = createSlice({
@@ -18,12 +20,6 @@ export const globalSlice = createSlice({
     },
     setModal: (state, action) => {
       state.modals[action.payload.modal] = action.payload.isOpen;
-    },
-    setLoginModal: (state, action) => {
-      state.isSigninModalOpen = action.payload;
-    },
-    setRegisterModal: (state, action) => {
-      state.isRegisterModalOpen = action.payload;
     },
   },
 });

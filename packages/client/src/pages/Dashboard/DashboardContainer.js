@@ -23,7 +23,7 @@ import TabPanel from "../../components/molecule/TabPanel";
 import LoadingComponent from "../../components/molecule/LoadingComponent";
 import LoginModal from "./components/LoginModal";
 import RegisterModal from "./components/RegisterModal";
-import { setIsAuthenticated, setLoginModal, setRegisterModal } from "../../slices/global-slice";
+import { setIsAuthenticated, setModal } from "../../slices/global-slice";
 import { removeAddress } from "../../slices/dashboard-slice";
 import { setIsAddModalOpen } from "../../slices/dashboard-slice";
 import SnackbarComponent from "../../components/molecule/Snackbar";
@@ -42,15 +42,9 @@ const DashboardContainer = () => {
   const chainId = queryParam.get("chainId");
   const newQueryParameters = new URLSearchParams();
   const isAddModalOpen = useSelector((state) => state.dashboard.isAddModalOpen);
-  const isLoginModalOpen = useSelector(
-    (state) => state.global.isSigninModalOpen
-  );
-  const modals = useSelector(
-    (state) => state.global.modals
-  );
-  const isRegisterModalOpen = useSelector(
-    (state) => state.global.isRegisterModalOpen
-  );
+
+  const modals = useSelector((state) => state.global.modals);
+
   const [getTxApi, txApiResult] = useLazyGetTransactionListQuery();
 
   const isRefetching =
@@ -71,19 +65,18 @@ const DashboardContainer = () => {
       );
       setLocalError({
         severity: "success",
-        message: "Login success"
-      })
-      dispatch(setIsAuthenticated(true))
-      dispatch(setLoginModal(false))
+        message: "Login success",
+      });
+      dispatch(setIsAuthenticated(true));
+      dispatch(setModal({ modal: "login", isOpen: false }));
     } else if (loginUserApiResult?.error?.status === 400) {
       setLocalError({
         severity: "error",
-        message: "Wrong credentials provided"
-      })
+        message: "Wrong credentials provided",
+      });
     }
   }, [loginUserApiResult]);
 
-  console.log("MODAAAL", modals);
   const handleOnClickAdd = () => {
     dispatch(setIsAddModalOpen({ isOpen: true }));
   };
@@ -95,8 +88,7 @@ const DashboardContainer = () => {
   const handleSubmitCreateTx = (transactions) => {
     console.log("container: ");
   };
-  console.log("ERROR:" , localError)
-  console.log("ERROR:" , isEmpty(localError))
+
   const handleOnDelete = ({ address }) => {
     chainId && newQueryParameters.set("chainId", chainId);
     txCount && newQueryParameters.set("txCount", txCount);
@@ -124,17 +116,17 @@ const DashboardContainer = () => {
   const handleChange = (event, newValue) => setValue(newValue);
 
   const handleCloseLoginModal = () => {
-    dispatch(setLoginModal(false));
+    dispatch(setModal({ modal: "login", isOpen: false }));
   };
 
   const handleCloseRegisterModal = () => {
-    dispatch(setRegisterModal(false));
+    dispatch(setModal({ modal: "register", isOpen: false }));
   };
 
   const onLoginSubmit = (values) => {
     loginUserApi(values);
   };
-
+console.log("LOGIN USER: ", loginUserApiResult)
   const handleCloseSnackbar = () => {
     setLocalError({});
   };
@@ -188,11 +180,11 @@ const DashboardContainer = () => {
       />
       <LoginModal
         handleSubmit={onLoginSubmit}
-        isOpen={modals["sign-in"]?.isOpen}
+        isOpen={modals["login"]}
         onClose={handleCloseLoginModal}
       />
       <RegisterModal
-        isOpen={isRegisterModalOpen}
+        isOpen={modals["register"]}
         onClose={handleCloseRegisterModal}
       />
       <Backdrop
