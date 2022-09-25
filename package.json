@@ -1,0 +1,17 @@
+{
+  "name": "block-chain-wallet-explorer",
+  "version": "1.0.0",
+  "npmClient": "yarn",
+  "private": true,
+  "workspaces": [
+     "packages/*"
+  ],
+  "scripts": {    
+     "start:client": "yarn workspace client start",    
+     "start:api": "yarn workspace api start:dev",    
+     "build:client": "yarn workspace client build",
+     "start:prod": "yarn workspace api start:prod",
+     "start": "yarn workspace api start",
+     "build": "yarn workspace api build"
+  }
+}
