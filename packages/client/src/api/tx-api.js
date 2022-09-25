@@ -2,7 +2,17 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const transactionListApi = createApi({
   reducerPath: "tx-list-api",
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: process.env.REACT_APP_BASE_URL,
+    prepareHeaders: (headers, { getState }) => {
+      const accessToken = window.localStorage.getItem("jwt-token");
+      if (accessToken) {
+        headers.set("authorization", `Bearer ${accessToken}`);
+      }
+      return headers;
+    },
+  }),
+
   tagTypes: ["WalletTx"],
   endpoints: (builder) => ({
     getTransactionList: builder.query({

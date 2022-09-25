@@ -1,5 +1,5 @@
 import React from "react";
-import {useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
@@ -12,7 +12,7 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import PolicyIcon from "@mui/icons-material/Policy";
-import { setLoginModal } from "../../slices/global-slice";
+import { setLoginModal, setModal } from "../../slices/global-slice";
 
 const drawerWidth = 240;
 
@@ -47,13 +47,15 @@ const HeaderContainer = ({ open, handleDrawerOpen, isAuthenticated }) => {
     setAnchorElUser(null);
   };
 
-
   const handleSelectItem = (x) => (y) => {
-    if(x === "Sign-in"){
-      dispatch(setLoginModal(true))
+    if (x === "Sign-in") {
+      dispatch(setLoginModal(true));
+    } else if (x === "Logout"){
+      console.log('WHAT')
+      dispatch(setModal({modal: "logout", isOpen: true}))
     }
     setAnchorElUser(null);
-  }
+  };
 
   return (
     <AppBar position="fixed" open={open}>
@@ -116,7 +118,10 @@ const HeaderContainer = ({ open, handleDrawerOpen, isAuthenticated }) => {
           >
             {settings.map((setting) => (
               <MenuItem
-                disabled={setting === "Logout" && !isAuthenticated}
+                disabled={
+                  (setting === "Logout" && !isAuthenticated) ||
+                  (setting === "Sign-in" && isAuthenticated)
+                }
                 key={setting}
                 onClick={handleSelectItem(setting)}
               >

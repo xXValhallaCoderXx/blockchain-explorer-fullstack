@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
-import { useLazyGetTransactionListQuery } from "../../api/tx-api";
+import {
+  useLazyGetTransactionListQuery,
+  useLoginUserMutation,
+} from "../../api/tx-api";
 
 import { CircularProgress, Backdrop, Tab, Tabs } from "@mui/material";
 
@@ -20,13 +23,16 @@ import TabPanel from "../../components/molecule/TabPanel";
 import LoadingComponent from "../../components/molecule/LoadingComponent";
 import LoginModal from "./components/LoginModal";
 import RegisterModal from "./components/RegisterModal";
-import { setLoginModal, setRegisterModal } from "../../slices/global-slice";
+import { setIsAuthenticated, setLoginModal, setRegisterModal } from "../../slices/global-slice";
 import { removeAddress } from "../../slices/dashboard-slice";
 import { setIsAddModalOpen } from "../../slices/dashboard-slice";
+import SnackbarComponent from "../../components/molecule/Snackbar";
 
 const DashboardContainer = () => {
   const dispatch = useDispatch();
+  const [loginUserApi, loginUserApiResult] = useLoginUserMutation();
   const [value, setValue] = useState(0);
+  const [localError, setLocalError] = useState({});
   const selectedWallets = useSelector(
     (state) => state.dashboard.selectedAddresses
   );
@@ -36,8 +42,15 @@ const DashboardContainer = () => {
   const chainId = queryParam.get("chainId");
   const newQueryParameters = new URLSearchParams();
   const isAddModalOpen = useSelector((state) => state.dashboard.isAddModalOpen);
-  const isLoginModalOpen = useSelector(state => state.global.isSigninModalOpen)
-  const isRegisterModalOpen = useSelector(state => state.global.isRegisterModalOpen)
+  const isLoginModalOpen = useSelector(
+    (state) => state.global.isSigninModalOpen
+  );
+  const modals = useSelector(
+    (state) => state.global.modals
+  );
+  const isRegisterModalOpen = useSelector(
+    (state) => state.global.isRegisterModalOpen
+  );
   const [getTxApi, txApiResult] = useLazyGetTransactionListQuery();
 
   const isRefetching =
@@ -50,9 +63,27 @@ const DashboardContainer = () => {
     }
   }, [addresses, txCount, chainId]);
 
+  useEffect(() => {
+    if (loginUserApiResult.isSuccess) {
+      window.localStorage.setItem(
+        "jwt-token",
+        loginUserApiResult.data.access_token
+      );
+      setLocalError({
+        severity: "success",
+        message: "Login success"
+      })
+      dispatch(setIsAuthenticated(true))
+      dispatch(setLoginModal(false))
+    } else if (loginUserApiResult?.error?.status === 400) {
+      setLocalError({
+        severity: "error",
+        message: "Wrong credentials provided"
+      })
+    }
+  }, [loginUserApiResult]);
 
-
-  console.log("ddd", isAddModalOpen);
+  console.log("MODAAAL", modals);
   const handleOnClickAdd = () => {
     dispatch(setIsAddModalOpen({ isOpen: true }));
   };
@@ -61,29 +92,11 @@ const DashboardContainer = () => {
     dispatch(setIsAddModalOpen({ isOpen: false }));
   };
 
-  // const handleSubmit = ({ address, label }) => {
-  //   chainId && newQueryParameters.set("chainId", chainId);
-  //   txCount && newQueryParameters.set("txCount", txCount);
-  //   let tempAddress = queryParam.get("addresses");
-  //   if (!tempAddress) {
-  //     newQueryParameters.set("addresses", address);
-  //     setSearchParams(newQueryParameters);
-  //   } else {
-  //     newQueryParameters.set("addresses", `${tempAddress},${address}`);
-  //       setSearchParams(newQueryParameters);
-  //     // if (tempAddress.includes(",")) {
-  //     //   console.log("HERE", tempAddress)
-  //     // } else {
-  //     //   newQueryParameters.set("addresses", `${tempAddress},${address}`);
-  //     //   setSearchParams(newQueryParameters);
-  //     // }
-  //   }
-  // };
-
   const handleSubmitCreateTx = (transactions) => {
-    console.log("container: ")
-  }
-
+    console.log("container: ");
+  };
+  console.log("ERROR:" , localError)
+  console.log("ERROR:" , isEmpty(localError))
   const handleOnDelete = ({ address }) => {
     chainId && newQueryParameters.set("chainId", chainId);
     txCount && newQueryParameters.set("txCount", txCount);
@@ -112,11 +125,19 @@ const DashboardContainer = () => {
 
   const handleCloseLoginModal = () => {
     dispatch(setLoginModal(false));
-  }
+  };
 
   const handleCloseRegisterModal = () => {
     dispatch(setRegisterModal(false));
-  }
+  };
+
+  const onLoginSubmit = (values) => {
+    loginUserApi(values);
+  };
+
+  const handleCloseSnackbar = () => {
+    setLocalError({});
+  };
 
   return (
     <Box>
@@ -165,14 +186,27 @@ const DashboardContainer = () => {
         isLoading={isRefetching || initialLoading}
         txApiResult={txApiResult}
       />
-      <LoginModal isOpen={isLoginModalOpen} onClose={handleCloseLoginModal} />
-      <RegisterModal isOpen={isRegisterModalOpen} onClose={handleCloseRegisterModal} />
+      <LoginModal
+        handleSubmit={onLoginSubmit}
+        isOpen={modals["sign-in"]?.isOpen}
+        onClose={handleCloseLoginModal}
+      />
+      <RegisterModal
+        isOpen={isRegisterModalOpen}
+        onClose={handleCloseRegisterModal}
+      />
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={isRefetching}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+      <SnackbarComponent
+        onClose={handleCloseSnackbar}
+        isOpen={!isEmpty(localError)}
+        message={localError?.message}
+        severity={localError?.severity}
+      />
     </Box>
   );
 };

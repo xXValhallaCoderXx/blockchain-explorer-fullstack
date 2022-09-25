@@ -4,6 +4,9 @@ const initialState = {
   isAuthenticated: false,
   isSigninModalOpen: false,
   isRegisterModalOpen: false,
+  modals: {
+    logout: false
+  }
 };
 
 export const globalSlice = createSlice({
@@ -11,7 +14,10 @@ export const globalSlice = createSlice({
   initialState,
   reducers: {
     setIsAuthenticated: (state, action) => {
-      state.isAuthenticated = action.payload.isAuthenticated;
+      state.isAuthenticated = action.payload;
+    },
+    setModal: (state, action) => {
+      state.modals[action.payload.modal] = action.payload.isOpen;
     },
     setLoginModal: (state, action) => {
       state.isSigninModalOpen = action.payload;
@@ -23,7 +29,7 @@ export const globalSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setIsAuthenticated, setLoginModal, setRegisterModal } =
+export const { setIsAuthenticated, setLoginModal, setRegisterModal, setModal } =
   globalSlice.actions;
 
 export default globalSlice.reducer;

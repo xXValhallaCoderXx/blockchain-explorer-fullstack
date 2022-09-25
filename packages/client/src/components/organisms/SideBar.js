@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { styled, useTheme } from "@mui/material/styles";
 import { Grid, Avatar, Typography } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
@@ -14,8 +14,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import BookIcon from "@mui/icons-material/Book";
-import { useNavigate, Link as RouterLink } from "react-router-dom";
-import Link from "@mui/material/Link";
+import { useNavigate } from "react-router-dom";
+import { setModal } from "../../slices/global-slice";
 
 const drawerWidth = 240;
 
@@ -27,6 +27,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export default function PersistentDrawerLeft({ open, handleDrawerClose }) {
   const theme = useTheme();
+  const dispatch = useDispatch()
   const isAuthenticated = useSelector((state) => state.global.isAuthenticated);
   const navigate = useNavigate();
   const handleOnClick = (path) => () => {
@@ -36,7 +37,9 @@ export default function PersistentDrawerLeft({ open, handleDrawerClose }) {
       navigate(`/${path.value}`);
     }
   };
-  console.log("IS AUTHENTICATED: ", isAuthenticated);
+  const onClickSignin = () => {
+    dispatch(setModal({modal: "sign-in", isOpen: true}))
+  }
   return (
     <Drawer
       sx={{
@@ -75,9 +78,9 @@ export default function PersistentDrawerLeft({ open, handleDrawerClose }) {
             sx={{ height: 90, width: 90, border: "2px solid white", mb: 2 }}
           />
           <Typography variant="h5" sx={{ fontSize: 16 }} color="white">
-            <Link color="secondary" component={RouterLink}>
+            <span sx={{fontWeight: 600}} onClick={onClickSignin}>
               Sign in
-            </Link>{" "}
+            </span>{" "}
             to tag transactions
           </Typography>
         </Grid>

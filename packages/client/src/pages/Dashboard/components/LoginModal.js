@@ -5,13 +5,16 @@ import { styled } from "@mui/system";
 import { TextField } from "formik-material-ui";
 import { object, string } from "yup";
 import { useFormik, FormikProvider, Field } from "formik";
-import ConfirmationModal from "../../../components/organisms/ConfirmationModal";
+import ConfirmationModal from "../../../components/molecule/ConfirmationModal";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { setLoginModal, setRegisterModal } from "../../../slices/global-slice";
+
 
 const LoginModal = ({ isOpen, onClose, handleSubmit }) => {
   const matches = useMediaQuery("(min-width:600px)");
   const dispatch = useDispatch();
+
+  console.log("LOGIN: ", isOpen)
   const formik = useFormik({
     initialValues: {
       email: "",
