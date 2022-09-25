@@ -1,8 +1,8 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
-import { GetTxQueryDTO, GetTxParamDTO } from './transactions.dto';
-import { IExternalApiResponse, ITxItem } from './transaction.types';
+import { GetTxQueryDTO } from './transactions.dto';
+import { IExternalApiResponse } from './transaction.types';
 import { ethers } from 'ethers';
 import { arrayChunker } from 'src/utils/array-parsers';
 import { delay } from 'src/utils/generic-util';

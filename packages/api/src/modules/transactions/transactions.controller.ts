@@ -1,15 +1,5 @@
-import {
-  Controller,
-  Query,
-  Get,
-  ValidationPipe,
-  Post,
-  UseGuards,
-  Body,
-  Request,
-} from '@nestjs/common';
+import { Controller, Query, Get, ValidationPipe } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
-import { JwtAuthGuard } from 'src/guards/jwt.auth.guard';
 import { GetTxQueryDTO } from './transactions.dto';
 
 @Controller('transactions')

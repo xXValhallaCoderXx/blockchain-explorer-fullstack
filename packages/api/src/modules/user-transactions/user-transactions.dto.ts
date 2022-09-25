@@ -11,6 +11,10 @@ export class CreateTransactionDTO {
 
   @IsNotEmpty()
   @IsString()
+  txHash: string;
+
+  @IsNotEmpty()
+  @IsString()
   to: string;
 
   @IsNotEmpty()
@@ -22,11 +26,6 @@ export class CreateTransactionDTO {
   direction: string;
 
   @IsNotEmpty()
-  @IsDateString()
-  date: string;
-}
-
-export class FetchTransactionParams {
   @IsDateString()
   date: string;
 }
