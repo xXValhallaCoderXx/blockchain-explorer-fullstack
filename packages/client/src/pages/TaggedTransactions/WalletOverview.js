@@ -60,12 +60,24 @@ export const WalletOverviewContainer = ({ data }) => {
       sendingCount = sending.length;
       recieveCount = data[wallet].length - sendingCount;
       count += data[wallet].length;
+
+      const tagCount = {};
+
+      for (const element of data[wallet]) {
+        if (tagCount.hasOwnProperty(element.tag)) {
+          tagCount[element.tag]++;
+        } else {
+          tagCount[element.tag] = 1;
+        }
+      }
+
       parsedData.push({
         count,
         recieveCount,
         sendingCount,
         address: wallet,
         label: `Wallet #${index++}`,
+        tags: tagCount,
       });
     }
 

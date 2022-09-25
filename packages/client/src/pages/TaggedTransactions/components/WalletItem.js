@@ -1,13 +1,19 @@
-import { Box, Card, Typography, IconButton, Chip, Avatar } from "@mui/material";
+import { Box, Card, Typography, Chip, Avatar, Grid } from "@mui/material";
 import walletIcon from "assets/image/wallet-icon.png";
-import { Delete } from "@mui/icons-material";
 
 const WalletItem = ({ index, wallet, onClickCard, selectedWallets }) => {
+  console.log("WALLET: ", wallet);
+
+  // const firstDog = Array.isArray(wallet.tags) && wallet[].length ? wallet[0] : {};
+
+  const headers = Object.keys(wallet.tags);
+  console.log("jeaders", headers);
   return (
     <Card
       onClick={onClickCard(wallet)}
       elevation={0}
       sx={{
+        padding: 2,
         borderRadius: 5,
         boxShadow: selectedWallets.includes(wallet.address)
           ? "0px 0px 0px 6px #999999"
@@ -18,24 +24,58 @@ const WalletItem = ({ index, wallet, onClickCard, selectedWallets }) => {
         },
       }}
     >
-      <Box p={2}>
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
+      <Grid container>
+        <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
           <img src={walletIcon} alt="" />
-        </Box>
+        </Grid>
+        <Grid container>
+          <Grid item xs={6}>
+            <Box>
+              <Typography sx={{ fontWeight: 600, color: "#999999" }}>
+                Label
+              </Typography>
+              {wallet.label || `Wallet ${index}`}
+            </Box>
+            <Box sx={{ mt: 2, overflow: "hidden" }}>
+              <Typography sx={{ fontWeight: 600, color: "#999999" }}>
+                Address
+              </Typography>
+              {wallet.address}
+            </Box>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography
+              style={{
+                textAlign: "right",
+                marginRight: 10,
+                fontWeight: 600,
+                color: "#999999",
+                marginBottom: 2,
+              }}
+            >
+              Tags
+            </Typography>
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="flex-end"
+              pr={2}
+            >
+              {headers.map((item) => {
+                const tag = item;
+                const x = wallet.tags[item];
 
-        <Box mt={2}>
-          <Typography sx={{ fontWeight: 600, color: "#999999" }}>
-            Label
-          </Typography>
-          {wallet.label || `Wallet ${index}`}
-        </Box>
-        <Box mt={2}>
-          <Typography sx={{ fontWeight: 600, color: "#999999" }}>
-            Address
-          </Typography>
-          {wallet.address}
-        </Box>
-
+                return (
+                  <Typography variant="caption">
+                    {tag}: {x}
+                  </Typography>
+                );
+              })}
+            </Box>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Box p={2}>
         <Box
           mt={2}
           sx={{

@@ -32,7 +32,7 @@ const TxOverviewContainer = ({ data }) => {
                   {
                     label: "My First Dataset",
                     data: [data.recieveTxCount, data.sendTxCount],
-                    backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)"],
+                    backgroundColor: ["#45c363", "#cc5669"],
                     hoverOffset: 4,
                   },
                 ],
