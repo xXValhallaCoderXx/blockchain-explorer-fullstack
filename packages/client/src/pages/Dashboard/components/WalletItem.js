@@ -1,5 +1,5 @@
 import { Box, Card, Typography, IconButton } from "@mui/material";
-import walletIcon from "../../../assets/image/wallet-icon.png";
+import walletIcon from "assets/image/wallet-icon.png";
 import { Delete } from "@mui/icons-material";
 
 const WalletItem = ({

@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import ModalContainer from "../../../components/molecule/Modal";
+import ModalContainer from "components/molecule/Modal";
 import { Typography, Box, Button, Avatar } from "@mui/material";
 import { styled } from "@mui/system";
 import { TextField } from "formik-material-ui";
 import { object, string } from "yup";
 import { useFormik, FormikProvider, Field } from "formik";
-import { setIsAddModalOpen } from "../../../slices/dashboard-slice";
+import { setIsAddModalOpen } from "slices/dashboard-slice";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import walletIcon from "../../../assets/image/wallet-icon.png";
+import walletIcon from "assets/image/wallet-icon.png";
 
 const AddWalletModal = ({
   isOpen,

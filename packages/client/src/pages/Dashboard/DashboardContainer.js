@@ -1,32 +1,35 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Box } from "@mui/material";
+import isEmpty from "lodash.isempty";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
+import { setIsAuthenticated, setModal } from "slices/global-slice";
+import { removeAddress } from "slices/dashboard-slice";
+import { setIsAddModalOpen } from "slices/dashboard-slice";
+
 import {
   useLazyGetTransactionListQuery,
   useLoginUserMutation,
-} from "../../api/tx-api";
+} from "api/tx-api";
 
+import {
+  EmptySearchState,
+  TabPanel,
+  LoadingState,
+  Snackbar,
+} from "components/molecule";
 import { CircularProgress, Backdrop, Tab, Tabs } from "@mui/material";
 
-import isEmpty from "lodash.isempty";
+import { FilterBar } from "components/organisms";
 
 import WalletOverview from "./WalletOverview";
 import TxListContainer from "./TransactionList";
 
-import FilterBarContainer from "../../components/organisms/FilterBar";
 import AddWalletModal from "./components/AddWalletModal";
-import EmptySearchContainer from "../../components/molecule/EmptySearch";
-import TabPanel from "../../components/molecule/TabPanel";
-import LoadingComponent from "../../components/molecule/LoadingComponent";
 import LoginModal from "./components/LoginModal";
 import RegisterModal from "./components/RegisterModal";
-import { setIsAuthenticated, setModal } from "../../slices/global-slice";
-import { removeAddress } from "../../slices/dashboard-slice";
-import { setIsAddModalOpen } from "../../slices/dashboard-slice";
-import SnackbarComponent from "../../components/molecule/Snackbar";
 
 const DashboardContainer = () => {
   const dispatch = useDispatch();
@@ -126,14 +129,14 @@ const DashboardContainer = () => {
   const onLoginSubmit = (values) => {
     loginUserApi(values);
   };
-console.log("LOGIN USER: ", loginUserApiResult)
+  console.log("LOGIN USER: ", loginUserApiResult);
   const handleCloseSnackbar = () => {
     setLocalError({});
   };
 
   return (
     <Box>
-      <FilterBarContainer
+      <FilterBar
         onClickAdd={handleOnClickAdd}
         onChangeTx={handleOnClickTx}
         onChangeNetwork={handleOnChangeNetwork}
@@ -142,9 +145,9 @@ console.log("LOGIN USER: ", loginUserApiResult)
       />
       <Box p={5}>
         {initialLoading ? (
-          <LoadingComponent message={"Fetching wallet data..."} />
+          <LoadingState message={"Fetching wallet data..."} />
         ) : isEmpty(txApiResult.data) ? (
-          <EmptySearchContainer message="Add Wallets to find the transactions that matter" />
+          <EmptySearchState message="Add Wallets to find the transactions that matter" />
         ) : (
           <Box sx={{ width: "100%" }}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -193,7 +196,7 @@ console.log("LOGIN USER: ", loginUserApiResult)
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-      <SnackbarComponent
+      <Snackbar
         onClose={handleCloseSnackbar}
         isOpen={!isEmpty(localError)}
         message={localError?.message}

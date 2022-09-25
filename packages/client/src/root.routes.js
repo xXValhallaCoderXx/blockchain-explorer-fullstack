@@ -9,7 +9,6 @@ import { setIsAuthenticated, setModal } from "./slices/global-slice";
 const RootRoutes = () => {
   const dispatch = useDispatch();
   const modals = useSelector((state) => state.global.modals);
-  console.log("MODALS: ", modals);
   const handleLogout = () => {
     window.localStorage.setItem("jwt-token", "");
     dispatch(setIsAuthenticated(false));

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Typography, Box, Card, Grid, Button, Chip } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { format } from "date-fns";
-import EmptySearchContainer from "../../components/molecule/EmptySearch";
+import { EmptySearchState } from "components/molecule";
 import AddTransactionTagModal from "./components/AddTransactionTagModal";
 
 const columns = [
@@ -125,7 +125,7 @@ const TxListContainer = ({ data, selectedWallets }) => {
 
   if (parsedData.length === 0) {
     return (
-      <EmptySearchContainer message="Please select which wallets to view in Overview" />
+      <EmptySearchState message="Please select which wallets to view in Overview" />
     );
   }
   console.log("PARSED DATA: ", parsedData)

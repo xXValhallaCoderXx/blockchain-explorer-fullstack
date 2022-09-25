@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ModalContainer from "../../../components/molecule/Modal";
+import ModalContainer from "components/molecule/Modal";
 import {
   Typography,
   Box,
@@ -10,8 +10,8 @@ import {
   Grid,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import walletIcon from "../../../assets/image/wallet-icon.png";
-import { useCreateUserTransactionsMutation } from "../../../api/tx-api";
+import walletIcon from "assets/image/wallet-icon.png";
+import { useCreateUserTransactionsMutation } from "api/tx-api";
 
 const AddTransactionTagModal = ({
   isOpen,
@@ -21,14 +21,13 @@ const AddTransactionTagModal = ({
   data,
 }) => {
   const [filtered, setFiltered] = useState([]);
-  const [txApi, txApiResult] = useCreateUserTransactionsMutation({});
+  const [txApi] = useCreateUserTransactionsMutation({});
 
   useEffect(() => {
     const taggedTxs = data.filter((tx) => tx.type !== "");
     setFiltered(taggedTxs);
   }, [data]);
 
-  console.log("ADD MODAL", txApiResult);
   const handleOnSubmit = () => {
     txApi({ data: "s" });
   };
