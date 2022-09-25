@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 
 import { UserTransaction } from './user-transactions.model';
-import { CreateTransactionDTO, BulkCreateTxDTO } from './user-transactions.dto';
+import { CreateTransactionDTO } from './user-transactions.dto';
 import { UsersService } from 'src/modules/user/users.service';
 
 @Injectable()
