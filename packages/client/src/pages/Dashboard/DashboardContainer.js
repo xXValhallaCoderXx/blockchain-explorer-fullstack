@@ -18,7 +18,9 @@ import AddWalletModal from "./components/AddWalletModal";
 import EmptySearchContainer from "../../components/molecule/EmptySearch";
 import TabPanel from "../../components/molecule/TabPanel";
 import LoadingComponent from "../../components/molecule/LoadingComponent";
-
+import LoginModal from "./components/LoginModal";
+import RegisterModal from "./components/RegisterModal";
+import { setLoginModal, setRegisterModal } from "../../slices/global-slice";
 import { removeAddress } from "../../slices/dashboard-slice";
 import { setIsAddModalOpen } from "../../slices/dashboard-slice";
 
@@ -34,6 +36,8 @@ const DashboardContainer = () => {
   const chainId = queryParam.get("chainId");
   const newQueryParameters = new URLSearchParams();
   const isAddModalOpen = useSelector((state) => state.dashboard.isAddModalOpen);
+  const isLoginModalOpen = useSelector(state => state.global.isSigninModalOpen)
+  const isRegisterModalOpen = useSelector(state => state.global.isRegisterModalOpen)
   const [getTxApi, txApiResult] = useLazyGetTransactionListQuery();
 
   const isRefetching =
@@ -106,6 +110,14 @@ const DashboardContainer = () => {
 
   const handleChange = (event, newValue) => setValue(newValue);
 
+  const handleCloseLoginModal = () => {
+    dispatch(setLoginModal(false));
+  }
+
+  const handleCloseRegisterModal = () => {
+    dispatch(setRegisterModal(false));
+  }
+
   return (
     <Box>
       <FilterBarContainer
@@ -153,6 +165,8 @@ const DashboardContainer = () => {
         isLoading={isRefetching || initialLoading}
         txApiResult={txApiResult}
       />
+      <LoginModal isOpen={isLoginModalOpen} onClose={handleCloseLoginModal} />
+      <RegisterModal isOpen={isRegisterModalOpen} onClose={handleCloseRegisterModal} />
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={isRefetching}

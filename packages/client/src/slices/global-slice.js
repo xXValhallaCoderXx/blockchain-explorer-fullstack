@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isAuthenticated: false,
-  isSigninModalOpen: false
+  isSigninModalOpen: false,
+  isRegisterModalOpen: false,
 };
 
 export const globalSlice = createSlice({
@@ -12,13 +13,17 @@ export const globalSlice = createSlice({
     setIsAuthenticated: (state, action) => {
       state.isAuthenticated = action.payload.isAuthenticated;
     },
-    setIsSigninModalOpen: (state, action) => {
+    setLoginModal: (state, action) => {
       state.isSigninModalOpen = action.payload;
-    }
+    },
+    setRegisterModal: (state, action) => {
+      state.isRegisterModalOpen = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setIsAuthenticated, setIsSigninModalOpen } = globalSlice.actions;
+export const { setIsAuthenticated, setLoginModal, setRegisterModal } =
+  globalSlice.actions;
 
 export default globalSlice.reducer;

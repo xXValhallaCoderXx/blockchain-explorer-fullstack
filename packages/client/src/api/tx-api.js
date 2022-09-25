@@ -19,6 +19,24 @@ export const transactionListApi = createApi({
         };
       },
     }),
+    registerUser: builder.mutation({
+      query: (body) => {
+        return {
+          url: `/auth/register`,
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    loginUser: builder.mutation({
+      query: (body) => {
+        return {
+          url: `/auth/login`,
+          method: "POST",
+          body,
+        };
+      },
+    }),
   }),
 });
 
@@ -26,4 +44,6 @@ export const {
   useGetTransactionListQuery,
   useLazyGetTransactionListQuery,
   useCreateUserTransactionsMutation,
+  useLoginUserMutation,
+  useRegisterUserMutation,
 } = transactionListApi;
