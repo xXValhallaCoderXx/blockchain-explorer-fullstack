@@ -50,7 +50,6 @@ export default function PersistentDrawerLeft({ open, handleDrawerClose }) {
           boxSizing: "border-box",
         },
       }}
-      variant="persistent"
       anchor="left"
       open={open}
     >
@@ -83,7 +82,14 @@ export default function PersistentDrawerLeft({ open, handleDrawerClose }) {
             </Typography>
           ) : (
             <Typography variant="h5" sx={{ fontSize: 16 }} color="white">
-              <span style={{ fontWeight: 600, cursor: "pointer", textDecoration: "underline" }} onClick={onClickSignin}>
+              <span
+                style={{
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                }}
+                onClick={onClickSignin}
+              >
                 Sign in
               </span>{" "}
               to tag transactions
