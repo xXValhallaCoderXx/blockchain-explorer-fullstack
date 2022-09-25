@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Outlet, useMatch, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Header from "../organisms/Header";
+import { useMediaQuery } from "@mui/material";
 
 import SideDraw from "../organisms/SideBar";
 
@@ -42,6 +43,7 @@ const CoreLayout = () => {
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.global.isAuthenticated);
   const isTaggedTx = useMatch("/tagged-tx");
+  const matches = useMediaQuery("(min-width:600px)");
 
   useEffect(() => {
     if (isTaggedTx && !isAuthenticated) {
@@ -64,10 +66,18 @@ const CoreLayout = () => {
         handleDrawerOpen={handleDrawerOpen}
       />
       <SideDraw open={open} handleDrawerClose={handleDrawerClose} />
-      <Main open={open}>
-        <DrawerHeader />
-        <Outlet />
-      </Main>
+      {matches ? (
+        <Main open={open}>
+          {" "}
+          <DrawerHeader />
+          <Outlet />
+        </Main>
+      ) : (
+        <div>
+          <DrawerHeader />
+          <Outlet />
+        </div>
+      )}
     </Container>
   );
 };
