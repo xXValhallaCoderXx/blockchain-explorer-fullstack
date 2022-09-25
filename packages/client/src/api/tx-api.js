@@ -8,9 +8,22 @@ export const transactionListApi = createApi({
     getTransactionList: builder.query({
       query: ({ txCount, chainId, addresses }) =>
         `transactions?txCount=${txCount}&chainId=${chainId}&addresses=${addresses}`,
+      providesTags: ["WalletTx"],
     }),
-    providesTags: ['WalletTx'],
+    createUserTransactions: builder.mutation({
+      query: (body) => {
+        return {
+          url: `/transactions`,
+          method: "POST",
+          body,
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetTransactionListQuery, useLazyGetTransactionListQuery } = transactionListApi;
+export const {
+  useGetTransactionListQuery,
+  useLazyGetTransactionListQuery,
+  useCreateUserTransactionsMutation,
+} = transactionListApi;

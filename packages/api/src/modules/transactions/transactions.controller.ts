@@ -1,5 +1,15 @@
-import { Controller, Query, Get, ValidationPipe } from '@nestjs/common';
+import {
+  Controller,
+  Query,
+  Get,
+  ValidationPipe,
+  Post,
+  UseGuards,
+  Body,
+  Request,
+} from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
+import { JwtAuthGuard } from 'src/guards/jwt.auth.guard';
 import { GetTxQueryDTO } from './transactions.dto';
 
 @Controller('transactions')
@@ -19,5 +29,12 @@ export class TransactionsController {
     query: GetTxQueryDTO,
   ) {
     return this.txService.getTransactionsByCount(query);
+  }
+
+  // Create a task
+  @UseGuards(JwtAuthGuard)
+  @Post('')
+  async createTask(@Body() body: any, @Request() req) {
+    return this.txService.create(body, req);
   }
 }

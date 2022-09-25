@@ -10,10 +10,8 @@ import {
   Grid,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import { TextField } from "formik-material-ui";
-import { object, string } from "yup";
-import { useFormik, FormikProvider, Field } from "formik";
 import walletIcon from "../../../assets/image/wallet-icon.png";
+import { useCreateUserTransactionsMutation } from "../../../api/tx-api";
 
 const AddTransactionTagModal = ({
   isOpen,
@@ -23,32 +21,17 @@ const AddTransactionTagModal = ({
   data,
 }) => {
   const [filtered, setFiltered] = useState([]);
+  const [txApi, txApiResult] = useCreateUserTransactionsMutation({});
 
   useEffect(() => {
     const taggedTxs = data.filter((tx) => tx.type !== "");
-    console.log("FILTEREDssss: ", data);
-    console.log("FILTERED: ", taggedTxs);
     setFiltered(taggedTxs);
   }, [data]);
 
-  //   const formik = useFormik({
-  //     initialValues: {
-  //       address: "",
-  //       label: "",
-  //     },
-  //     validationSchema: object({
-  //       address: string()
-  //         .required("Wallet address is required")
-  //         .matches(/^0x[a-fA-F0-9]{40}$/g, "Please enter a valid wallet address"),
-  //       label: string().required("Wallet label is required"),
-  //     }),
-  //     onSubmit: (values, actions) => {
-  //         console.log("hmmm")
-  //       handleSubmit && handleSubmit(values);
-  //       actions.setSubmitting(false);
-  //     },
-  //   });
-
+  console.log("ADD MODAL", txApiResult);
+  const handleOnSubmit = () => {
+    txApi({ data: "s" });
+  };
   const handleOnClose = () => {
     onClose && onClose();
   };
@@ -104,7 +87,7 @@ const AddTransactionTagModal = ({
         <Button
           sx={{ ml: 3 }}
           variant="contained"
-          type="submit"
+          onClick={handleOnSubmit}
           disabled={isLoading}
         >
           Submit

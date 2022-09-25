@@ -44,6 +44,21 @@ export class TransactionsService {
     return apiResponse;
   }
 
+  public async create(data: any, req: any): Promise<any> {
+    // const user = await this.usersService.findUserByEmail(req.user.email);
+    // if (!user) {
+    //   return null;
+    // }
+
+    // return await this.taskModel.create<Task>({
+    //   ...data,
+    //   completed: false,
+    //   userId: req.user.id,
+    //   deadline: data.deadline,
+    // });
+    return { hehe: 's' };
+  }
+
   private parseExternalApiResponse(data: IExternalApiResponse) {
     const parsedData = data.items.map((item) => {
       const sourceWallet = data.address;

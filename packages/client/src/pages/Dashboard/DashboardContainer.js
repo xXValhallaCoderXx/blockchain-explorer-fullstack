@@ -57,24 +57,28 @@ const DashboardContainer = () => {
     dispatch(setIsAddModalOpen({ isOpen: false }));
   };
 
-  const handleSubmit = ({ address, label }) => {
-    chainId && newQueryParameters.set("chainId", chainId);
-    txCount && newQueryParameters.set("txCount", txCount);
-    let tempAddress = queryParam.get("addresses");
-    if (!tempAddress) {
-      newQueryParameters.set("addresses", address);
-      setSearchParams(newQueryParameters);
-    } else {
-      newQueryParameters.set("addresses", `${tempAddress},${address}`);
-        setSearchParams(newQueryParameters);
-      // if (tempAddress.includes(",")) {
-      //   console.log("HERE", tempAddress)
-      // } else {
-      //   newQueryParameters.set("addresses", `${tempAddress},${address}`);
-      //   setSearchParams(newQueryParameters);
-      // }
-    }
-  };
+  // const handleSubmit = ({ address, label }) => {
+  //   chainId && newQueryParameters.set("chainId", chainId);
+  //   txCount && newQueryParameters.set("txCount", txCount);
+  //   let tempAddress = queryParam.get("addresses");
+  //   if (!tempAddress) {
+  //     newQueryParameters.set("addresses", address);
+  //     setSearchParams(newQueryParameters);
+  //   } else {
+  //     newQueryParameters.set("addresses", `${tempAddress},${address}`);
+  //       setSearchParams(newQueryParameters);
+  //     // if (tempAddress.includes(",")) {
+  //     //   console.log("HERE", tempAddress)
+  //     // } else {
+  //     //   newQueryParameters.set("addresses", `${tempAddress},${address}`);
+  //     //   setSearchParams(newQueryParameters);
+  //     // }
+  //   }
+  // };
+
+  const handleSubmitCreateTx = (transactions) => {
+    console.log("container: ")
+  }
 
   const handleOnDelete = ({ address }) => {
     chainId && newQueryParameters.set("chainId", chainId);
@@ -145,7 +149,7 @@ const DashboardContainer = () => {
       <AddWalletModal
         isOpen={isAddModalOpen}
         onClose={handleOnClose}
-        handleSubmit={handleSubmit}
+        handleSubmit={handleSubmitCreateTx}
         isLoading={isRefetching || initialLoading}
         txApiResult={txApiResult}
       />
