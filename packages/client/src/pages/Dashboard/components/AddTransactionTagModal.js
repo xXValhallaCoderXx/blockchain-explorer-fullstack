@@ -9,9 +9,11 @@ import {
   ListItem,
   Grid,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import walletIcon from "assets/image/wallet-icon.png";
 import { useCreateUserTransactionsMutation } from "api/tx-api";
+
 
 const AddTransactionTagModal = ({
   isOpen,
@@ -21,15 +23,33 @@ const AddTransactionTagModal = ({
   data,
 }) => {
   const [filtered, setFiltered] = useState([]);
-  const [txApi] = useCreateUserTransactionsMutation({});
+  const navigate = useNavigate();
+  const [txApi, txApiResult] = useCreateUserTransactionsMutation({});
 
   useEffect(() => {
     const taggedTxs = data.filter((tx) => tx.type !== "");
     setFiltered(taggedTxs);
   }, [data]);
 
+  useEffect(() => {
+    console.log("TX API: ", txApiResult);
+    if (txApiResult.status === "rejected") {
+    } else if (txApiResult.status === "fulfilled" && txApiResult.isSuccess) {
+      navigate("/tagged-tx");
+    }
+  }, [txApiResult]);
+
   const handleOnSubmit = () => {
-    txApi({ data: "s" });
+    const prepareBody = data.filter((tx) => {
+      if (tx.type) {
+        delete tx.id;
+        tx.tag = tx.type;
+        tx.txHash = tx.tx_hash;
+        return tx;
+      }
+    });
+
+    txApi({ transactions: prepareBody });
   };
   const handleOnClose = () => {
     onClose && onClose();

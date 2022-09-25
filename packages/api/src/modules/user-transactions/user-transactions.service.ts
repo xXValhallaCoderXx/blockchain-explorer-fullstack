@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 
 import { UserTransaction } from './user-transactions.model';
@@ -40,12 +40,12 @@ export class UserTransactionsService {
     if (!user) {
       return null;
     }
-
+    console.log('DATA: ', data);
     const injectUser = data.transactions.map((tx) => ({
       ...tx,
       userId: user.id,
     }));
-
+    console.log('INJECT USERS: ', injectUser);
     return await this.userTxModel.bulkCreate<UserTransaction>(injectUser);
   }
 }

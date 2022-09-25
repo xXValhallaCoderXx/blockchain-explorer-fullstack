@@ -10,6 +10,11 @@ import { User } from '../user/user.model';
 
 @Table
 export class UserTransaction extends Model<UserTransaction> {
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  txHash: string;
   // Should be relation or very least ENUM
   @Column({
     type: DataType.STRING,
