@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Outlet } from "react-router-dom";
+import { Outlet, useMatch, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Header from "../organisms/Header";
 
@@ -19,7 +19,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
-
     backgroundColor: "#EFF3F8",
     flexGrow: 1,
 
@@ -40,7 +39,15 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
 
 const CoreLayout = () => {
   const [open, setOpen] = React.useState(false);
-  const isAuthenticated = useSelector(state => state.global.isAuthenticated)
+  const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.global.isAuthenticated);
+  const isTaggedTx = useMatch("/tagged-tx");
+
+  useEffect(() => {
+    if (isTaggedTx && !isAuthenticated) {
+      navigate("/transactions");
+    }
+  }, [isAuthenticated]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -51,7 +58,11 @@ const CoreLayout = () => {
   };
   return (
     <Container>
-      <Header isAuthenticated={isAuthenticated} open={open} handleDrawerOpen={handleDrawerOpen} />
+      <Header
+        isAuthenticated={isAuthenticated}
+        open={open}
+        handleDrawerOpen={handleDrawerOpen}
+      />
       <SideDraw open={open} handleDrawerClose={handleDrawerClose} />
       <Main open={open}>
         <DrawerHeader />
@@ -63,8 +74,7 @@ const CoreLayout = () => {
 
 const Container = styled("div")`
   height: 100%;
-  background-color: #EFF3F7;
-
+  background-color: #eff3f7;
 `;
 
 export default CoreLayout;

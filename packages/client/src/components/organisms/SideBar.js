@@ -38,7 +38,7 @@ export default function PersistentDrawerLeft({ open, handleDrawerClose }) {
     }
   };
   const onClickSignin = () => {
-    dispatch(setModal({ modal: "sign-in", isOpen: true }));
+    dispatch(setModal({ modal: "login", isOpen: true }));
   };
   return (
     <Drawer
@@ -83,7 +83,7 @@ export default function PersistentDrawerLeft({ open, handleDrawerClose }) {
             </Typography>
           ) : (
             <Typography variant="h5" sx={{ fontSize: 16 }} color="white">
-              <span sx={{ fontWeight: 600 }} onClick={onClickSignin}>
+              <span style={{ fontWeight: 600, cursor: "pointer", textDecoration: "underline" }} onClick={onClickSignin}>
                 Sign in
               </span>{" "}
               to tag transactions

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Typography, Box } from "@mui/material";
 import { styled } from "@mui/system";
 import { TextField } from "formik-material-ui";
-import { object, string } from "yup";
+import { object, string, ref } from "yup";
 import { useFormik, FormikProvider, Field } from "formik";
 import ConfirmationModal from "components/molecule/ConfirmationModal";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -18,9 +18,12 @@ const RegisterModal = ({ isOpen, onClose, handleSubmit }) => {
       confirmPassword: "",
     },
     validationSchema: object({
-      email: string().required("Email address is required"),
+      email: string().email().required("Email address is required"),
       password: string().required("Password is required"),
-      confirmPassword: string().required("Confirm password is required"),
+      confirmPassword: string()
+        .required("Confirm password is required")
+        .optional()
+        .oneOf([ref("password")], "Passwords must match"),
     }),
     onSubmit: (values, actions) => {
       handleSubmit && handleSubmit(values);
@@ -85,10 +88,10 @@ const RegisterModal = ({ isOpen, onClose, handleSubmit }) => {
               <Box sx={{ height: 70, mt: 0.5 }}>
                 <Field
                   fullWidth
-                  name={`password`}
-                  value={formik.values.password}
+                  name={`confirmPassword`}
+                  value={formik.values.confirmPassword}
                   onChange={formik.handleChange}
-                  label="Password"
+                  label="Confirm Password"
                   component={TextField}
                   size="small"
                   sx={{ backgroundColor: "white" }}

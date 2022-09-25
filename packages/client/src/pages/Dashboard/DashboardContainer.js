@@ -11,6 +11,7 @@ import { removeAddress, setIsAddModalOpen } from "slices/dashboard-slice";
 import {
   useLazyGetTransactionListQuery,
   useLoginUserMutation,
+  useRegisterUserMutation,
 } from "api/tx-api";
 
 import {
@@ -32,6 +33,7 @@ import { LoginModal, RegisterModal } from "components/organisms";
 const DashboardContainer = () => {
   const dispatch = useDispatch();
   const [loginUserApi, loginUserApiResult] = useLoginUserMutation();
+  const [registerUserApi, registerUserApiResult] = useRegisterUserMutation();
   const [value, setValue] = useState(0);
   const [localError, setLocalError] = useState({});
   const selectedWallets = useSelector(
@@ -77,6 +79,22 @@ const DashboardContainer = () => {
       });
     }
   }, [loginUserApiResult]);
+
+  useEffect(() => {
+    if (registerUserApiResult.isSuccess) {
+      setLocalError({
+        severity: "success",
+        message: "User created! Please sign in",
+      });
+      dispatch(setModal({ modal: "register", isOpen: false }));
+      dispatch(setModal({ modal: "login", isOpen: true }));
+    } else if (registerUserApiResult?.error?.status === 400) {
+      setLocalError({
+        severity: "error",
+        message: "Error creating user",
+      });
+    }
+  }, [registerUserApiResult]);
 
   const handleOnClickAdd = () => {
     dispatch(setIsAddModalOpen({ isOpen: true }));
@@ -141,6 +159,10 @@ const DashboardContainer = () => {
     setLocalError({});
   };
 
+  const onSubmitRegisterUser = (values) => {
+    registerUserApi(values)
+  };
+
   return (
     <Box>
       <FilterBar
@@ -196,6 +218,7 @@ const DashboardContainer = () => {
       <RegisterModal
         isOpen={modals["register"]}
         onClose={handleCloseRegisterModal}
+        handleSubmit={onSubmitRegisterUser}
       />
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
