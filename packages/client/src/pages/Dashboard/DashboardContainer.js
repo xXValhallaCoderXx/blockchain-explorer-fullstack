@@ -118,11 +118,19 @@ const DashboardContainer = () => {
   };
 
   const handleOnDelete = ({ address }) => {
+    console.log("WAA", address);
     chainId && newQueryParameters.set("chainId", chainId);
     txCount && newQueryParameters.set("txCount", txCount);
     const splitUrl = queryParam.get("addresses").split(",");
-    const filteredWallets = splitUrl.find((wallet) => wallet !== address);
-    newQueryParameters.set("addresses", filteredWallets);
+    console.log("WAA", splitUrl);
+    const filteredWallets = splitUrl.find(
+      (wallet) => wallet.toLowerCase() !== address.toLowerCase()
+    );
+    console.log("WAA", filteredWallets);
+    if (Array.isArray(filteredWallets) && filteredWallets[0] !== "undefined") {
+      newQueryParameters.set("addresses", filteredWallets);
+    }
+
     dispatch(removeAddress(address));
     setSearchParams(newQueryParameters);
   };
@@ -160,7 +168,7 @@ const DashboardContainer = () => {
   };
 
   const onSubmitRegisterUser = (values) => {
-    registerUserApi(values)
+    registerUserApi(values);
   };
 
   return (

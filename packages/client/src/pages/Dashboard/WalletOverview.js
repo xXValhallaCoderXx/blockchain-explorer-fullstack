@@ -47,7 +47,7 @@ const WalletOverview = ({ data, onClickDelete }) => {
 
   const handleOnClickDelete = (wallet) => (e) => {
     e.stopPropagation();
-    onClickDelete && onClickDelete(wallet);
+    onClickDelete(wallet);
   };
 
   return (

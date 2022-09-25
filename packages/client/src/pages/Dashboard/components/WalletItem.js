@@ -64,10 +64,6 @@ const WalletItem = ({
               avatar={<Avatar> {wallet.sendingCount}</Avatar>}
               label="Sending"
             />
-            {/* <Typography sx={{ color: "#ed788e", fontWeight: 600 }}>
-              Sending
-            </Typography>
-            {wallet.sendingCount} */}
           </Box>
           <Box>
           <Chip
@@ -75,10 +71,6 @@ const WalletItem = ({
               avatar={<Avatar> {wallet.recieveCount}</Avatar>}
               label="Recieving"
             />
-            {/* <Typography sx={{ color: "#46c464", fontWeight: 600 }}>
-              Recieving
-            </Typography>
-            {wallet.recieveCount} */}
           </Box>
         </Box>
       </Box>
