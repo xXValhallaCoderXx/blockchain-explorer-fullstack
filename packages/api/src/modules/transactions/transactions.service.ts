@@ -4,7 +4,8 @@ import { HttpService } from '@nestjs/axios';
 import { GetTxQueryDTO, GetTxParamDTO } from './transactions.dto';
 import { IExternalApiResponse, ITxItem } from './transaction.types';
 import { ethers } from 'ethers';
-
+import { arrayChunker } from 'src/utils/array-parsers';
+import { delay } from 'src/utils/generic-util';
 @Injectable()
 export class TransactionsService {
   constructor(
@@ -12,7 +13,7 @@ export class TransactionsService {
     private readonly httpService: HttpService,
   ) {}
 
-  async getTransactionsByCount(query: GetTxQueryDTO): Promise<any> {
+  async getTransactionsByCountV2(query: GetTxQueryDTO): Promise<any> {
     const API_KEY = this.configService.get('API_KEY');
     const BASE_URL = this.configService.get('BASE_URL');
 
@@ -22,41 +23,28 @@ export class TransactionsService {
 
     const URL_PARAMS = `quote-currency=USD&format=JSON&block-signed-at-asc=false&no-logs=false&page-size=${txCount}&key=${API_KEY}`;
 
-    // Barbaric way of doing this - but - POC ^^
+    // Simple batch runner
+    const chunkedJobs = arrayChunker(parsedAddresses, 4);
     const apiResponse = {};
-    console.log('HIT');
-    for (const address of parsedAddresses) {
-      try {
-        console.log('MAKING CALL');
-        const response = await this.httpService.axiosRef.get(
+
+    for (let i = 0; i < chunkedJobs.length; i++) {
+      const txJobBatch = chunkedJobs[i].map((address) => {
+        return this.httpService.axiosRef.get(
           `${BASE_URL}/${chainId}/address/${address}/transactions_v2/?${URL_PARAMS}`,
         );
+      });
+
+      const txJobBatchResult = await Promise.all(txJobBatch);
+
+      txJobBatchResult.forEach((response) => {
         const parsedData = this.parseExternalApiResponse(response.data.data);
-        console.log('END CALL');
-        apiResponse[address] = parsedData;
-        await new Promise((r) => setTimeout(r, 350));
-      } catch (error) {
-        console.log('error: ', error.response);
-        // throw new HttpException(500, 'Timeout');
-      }
+        apiResponse[response.data.data.address] = parsedData;
+      });
+
+      await delay(1000);
     }
-    console.log('DONE');
+
     return apiResponse;
-  }
-
-  public async create(data: any, req: any): Promise<any> {
-    // const user = await this.usersService.findUserByEmail(req.user.email);
-    // if (!user) {
-    //   return null;
-    // }
-
-    // return await this.taskModel.create<Task>({
-    //   ...data,
-    //   completed: false,
-    //   userId: req.user.id,
-    //   deadline: data.deadline,
-    // });
-    return { hehe: 's' };
   }
 
   private parseExternalApiResponse(data: IExternalApiResponse) {

@@ -28,13 +28,6 @@ export class TransactionsController {
     )
     query: GetTxQueryDTO,
   ) {
-    return this.txService.getTransactionsByCount(query);
-  }
-
-  // Create a task
-  @UseGuards(JwtAuthGuard)
-  @Post('')
-  async createTask(@Body() body: any, @Request() req) {
-    return this.txService.create(body, req);
+    return this.txService.getTransactionsByCountV2(query);
   }
 }
