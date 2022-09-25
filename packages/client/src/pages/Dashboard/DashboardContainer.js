@@ -119,7 +119,7 @@ const DashboardContainer = () => {
         {initialLoading ? (
           <LoadingComponent message={"Fetching wallet data..."} />
         ) : isEmpty(txApiResult.data) ? (
-          <EmptySearchContainer message="Start adding your wallets" />
+          <EmptySearchContainer message="Add Wallets to find the transactions that matter" />
         ) : (
           <Box sx={{ width: "100%" }}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>

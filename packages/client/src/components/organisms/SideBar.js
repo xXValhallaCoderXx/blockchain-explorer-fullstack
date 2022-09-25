@@ -1,6 +1,7 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
 import { styled, useTheme } from "@mui/material/styles";
-
+import { Grid, Avatar, Typography } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
@@ -13,24 +14,29 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import BookIcon from "@mui/icons-material/Book";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
+import Link from "@mui/material/Link";
 
 const drawerWidth = 240;
 
 const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
   padding: theme.spacing(0, 1),
+  backgroundColor: "#333333",
   ...theme.mixins.toolbar,
-  justifyContent: "flex-end",
 }));
 
 export default function PersistentDrawerLeft({ open, handleDrawerClose }) {
   const theme = useTheme();
+  const isAuthenticated = useSelector((state) => state.global.isAuthenticated);
   const navigate = useNavigate();
   const handleOnClick = (path) => () => {
-    navigate(`/${path.value}`)
-  }
+    if (path.value === "tagged-tx" && !isAuthenticated) {
+      console.log("not allow");
+    } else {
+      navigate(`/${path.value}`);
+    }
+  };
+  console.log("IS AUTHENTICATED: ", isAuthenticated);
   return (
     <Drawer
       sx={{
@@ -46,27 +52,61 @@ export default function PersistentDrawerLeft({ open, handleDrawerClose }) {
       open={open}
     >
       <DrawerHeader>
-        <IconButton onClick={handleDrawerClose}>
-          {theme.direction === "ltr" ? (
-            <ChevronLeftIcon />
-          ) : (
-            <ChevronRightIcon />
-          )}
-        </IconButton>
+        <Grid container>
+          <Grid item xs={12} display="flex" justifyContent="flex-end">
+            <IconButton color="secondary" onClick={handleDrawerClose}>
+              {theme.direction === "ltr" ? (
+                <ChevronLeftIcon />
+              ) : (
+                <ChevronRightIcon />
+              )}
+            </IconButton>
+          </Grid>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          sx={{ flexDirection: "column", mb: 3 }}
+        >
+          <Avatar
+            sx={{ height: 90, width: 90, border: "2px solid white", mb: 2 }}
+          />
+          <Typography variant="h5" sx={{ fontSize: 16 }} color="white">
+            <Link color="secondary" component={RouterLink}>
+              Sign in
+            </Link>{" "}
+            to tag transactions
+          </Typography>
+        </Grid>
       </DrawerHeader>
       <Divider />
-    <List>
-      {[{value: "transactions", label: "Dashboard"}, {value: "tagged-tx", label: "Tagged Tx"}].map((text, index) => (
-        <ListItem key={ImageBitmapRenderingContext} disablePadding onClick={handleOnClick(text)}>
-          <ListItemButton>
-            <ListItemIcon>
-              {text.value === "dashboard" ? <DashboardIcon /> : <BookIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text.label} />
-          </ListItemButton>
-        </ListItem>
-      ))}
-    </List>
+      <List>
+        {[
+          { value: "transactions", label: "Dashboard" },
+          { value: "tagged-tx", label: "My Transactions" },
+        ].map((text, index) => (
+          <ListItem
+            key={ImageBitmapRenderingContext}
+            disablePadding
+            disabled={text.value === "tagged-tx" && !isAuthenticated}
+            onClick={handleOnClick(text)}
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                {text.value === "transactions" ? (
+                  <DashboardIcon />
+                ) : (
+                  <BookIcon />
+                )}
+              </ListItemIcon>
+              <ListItemText primary={text.label} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
     </Drawer>
   );
 }
