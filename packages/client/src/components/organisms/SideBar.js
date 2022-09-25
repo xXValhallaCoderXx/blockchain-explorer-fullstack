@@ -27,7 +27,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export default function PersistentDrawerLeft({ open, handleDrawerClose }) {
   const theme = useTheme();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.global.isAuthenticated);
   const navigate = useNavigate();
   const handleOnClick = (path) => () => {
@@ -38,8 +38,8 @@ export default function PersistentDrawerLeft({ open, handleDrawerClose }) {
     }
   };
   const onClickSignin = () => {
-    dispatch(setModal({modal: "sign-in", isOpen: true}))
-  }
+    dispatch(setModal({ modal: "sign-in", isOpen: true }));
+  };
   return (
     <Drawer
       sx={{
@@ -77,12 +77,18 @@ export default function PersistentDrawerLeft({ open, handleDrawerClose }) {
           <Avatar
             sx={{ height: 90, width: 90, border: "2px solid white", mb: 2 }}
           />
-          <Typography variant="h5" sx={{ fontSize: 16 }} color="white">
-            <span sx={{fontWeight: 600}} onClick={onClickSignin}>
-              Sign in
-            </span>{" "}
-            to tag transactions
-          </Typography>
+          {isAuthenticated ? (
+            <Typography variant="h5" sx={{ fontSize: 16 }} color="white">
+              Welcome
+            </Typography>
+          ) : (
+            <Typography variant="h5" sx={{ fontSize: 16 }} color="white">
+              <span sx={{ fontWeight: 600 }} onClick={onClickSignin}>
+                Sign in
+              </span>{" "}
+              to tag transactions
+            </Typography>
+          )}
         </Grid>
       </DrawerHeader>
       <Divider />

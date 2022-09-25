@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { GetTxQueryDTO } from './transactions.dto';
@@ -35,7 +35,6 @@ export class TransactionsService {
       });
 
       const txJobBatchResult = await Promise.all(txJobBatch);
-
       txJobBatchResult.forEach((response) => {
         const parsedData = this.parseExternalApiResponse(response.data.data);
         apiResponse[response.data.data.address] = parsedData;
@@ -43,7 +42,6 @@ export class TransactionsService {
 
       await delay(1000);
     }
-
     return apiResponse;
   }
 

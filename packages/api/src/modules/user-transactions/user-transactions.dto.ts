@@ -36,6 +36,7 @@ export class CreateTransactionDTO {
   @IsNotEmpty()
   @IsDateString()
   date: string;
+  userId: any;
 }
 
 export class BulkCreateTxDTO {

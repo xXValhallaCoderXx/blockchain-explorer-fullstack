@@ -23,7 +23,7 @@ export const transactionListApi = createApi({
     createUserTransactions: builder.mutation({
       query: (body) => {
         return {
-          url: `/transactions`,
+          url: `/user-transactions/bulk`,
           method: "POST",
           body,
         };
