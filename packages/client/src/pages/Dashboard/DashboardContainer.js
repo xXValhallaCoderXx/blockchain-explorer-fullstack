@@ -59,7 +59,7 @@ const DashboardContainer = () => {
       getTxApi({ addresses, txCount, chainId });
     }
   }, [addresses, txCount, chainId]);
-  console.log("GO")
+  console.log("GO");
   useEffect(() => {
     if (loginUserApiResult.isSuccess) {
       window.localStorage.setItem(
@@ -79,8 +79,6 @@ const DashboardContainer = () => {
       });
     }
   }, [loginUserApiResult]);
-
-
 
   useEffect(() => {
     if (registerUserApiResult.isSuccess) {
@@ -120,14 +118,18 @@ const DashboardContainer = () => {
   };
 
   const handleOnDelete = ({ address }) => {
-    console.log("DELETE ")
     chainId && newQueryParameters.set("chainId", chainId);
     txCount && newQueryParameters.set("txCount", txCount);
     const splitUrl = queryParam.get("addresses").split(",");
+
     const filteredWallets = splitUrl.find(
       (wallet) => wallet.toLowerCase() !== address.toLowerCase()
     );
-    if (Array.isArray(filteredWallets) && filteredWallets[0] !== "undefined") {
+
+    if (
+      (Array.isArray(filteredWallets) && filteredWallets[0] !== "undefined") ||
+      filteredWallets
+    ) {
       newQueryParameters.set("addresses", filteredWallets);
     }
 
@@ -180,9 +182,11 @@ const DashboardContainer = () => {
         txCount={txCount}
         network={chainId}
       />
-      <Box sx={{
-        p: {xs: 2, md: 4}
-      }}>
+      <Box
+        sx={{
+          p: { xs: 2, md: 4 },
+        }}
+      >
         {initialLoading ? (
           <LoadingState message={"Fetching wallet data..."} />
         ) : isEmpty(txApiResult.data) ? (
