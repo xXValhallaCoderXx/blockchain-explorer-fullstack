@@ -105,6 +105,7 @@ const DashboardContainer = () => {
   };
 
   const handleSubmitCreateTx = ({ address, label }) => {
+    console.log("WHAT IS THIS: ")
     chainId && newQueryParameters.set("chainId", chainId);
     txCount && newQueryParameters.set("txCount", txCount);
     let tempAddress = queryParam.get("addresses");
@@ -115,6 +116,7 @@ const DashboardContainer = () => {
       newQueryParameters.set("addresses", `${tempAddress},${address}`);
       setSearchParams(newQueryParameters);
     }
+    dispatch(setIsAddModalOpen({ isOpen: false }));
   };
 
   const handleOnDelete = ({ address }) => {
