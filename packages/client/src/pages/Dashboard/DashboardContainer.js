@@ -105,7 +105,6 @@ const DashboardContainer = () => {
   };
 
   const handleSubmitCreateTx = ({ address, label }) => {
-    console.log("WHAT IS THIS: ")
     chainId && newQueryParameters.set("chainId", chainId);
     txCount && newQueryParameters.set("txCount", txCount);
     let tempAddress = queryParam.get("addresses");
